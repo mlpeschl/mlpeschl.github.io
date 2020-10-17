@@ -407,6 +407,12 @@ plt.imshow(output.cpu().view(3,512,512).permute(1,2,0).detach().numpy())
 &lt;li&gt;If I really have to choose, I would say I am a big fan of the &lt;a href=&#34;https://en.wikipedia.org/wiki/Dominated_convergence_theorem&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;dominated convergence theorem&lt;/a&gt;. It&amp;rsquo;s easy enough to understand with undergraduate measure theory and opens a vast and versatile area of applications. On one day you use it to find the limit of an infinite series and on another day you use it to prove completeness of a metric space. Quite beautiful if you ask me.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Why is your domain mlpeschl.com and not mpeschl.com?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The letter &amp;lsquo;L&amp;rsquo; in there corresponds to my second name (Leopold), but the reason I included it is more due to the fact that &amp;lsquo;ML&amp;rsquo; corresponds to the fascinating discipline of Machine Learning. (Coincidence? 🤔)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
