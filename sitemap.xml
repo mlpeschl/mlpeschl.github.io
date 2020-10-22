@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mlpeschl.github.io/post/particle_filtering_1/</loc>
+    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.github.io/</loc>
+    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.github.io/tag/particle-filtering/</loc>
+    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.github.io/tag/pomdp/</loc>
+    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.github.io/post/</loc>
+    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.github.io/tag/reinforcement-learning/</loc>
+    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.github.io/tags/</loc>
+    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mlpeschl.github.io/tag/computer-vision/</loc>
     <lastmod>2020-10-17T18:36:42+02:00</lastmod>
   </url>
@@ -14,21 +49,6 @@
   
   <url>
     <loc>https://mlpeschl.github.io/tag/deep-learning/</loc>
-    <lastmod>2020-10-17T18:36:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.github.io/</loc>
-    <lastmod>2020-10-17T18:36:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.github.io/post/</loc>
-    <lastmod>2020-10-17T18:36:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.github.io/tags/</loc>
     <lastmod>2020-10-17T18:36:42+02:00</lastmod>
   </url>
   
