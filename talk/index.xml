@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recent &amp; Upcoming Talks | Markus Peschl</title>
-    <link>https://mlpeschl.github.io/talk/</link>
-      <atom:link href="https://mlpeschl.github.io/talk/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://mlpeschl.com/talk/</link>
+      <atom:link href="https://mlpeschl.com/talk/index.xml" rel="self" type="application/rss+xml" />
     <description>Recent &amp; Upcoming Talks</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
     <image>
-      <url>https://mlpeschl.github.io/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
+      <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
       <title>Recent &amp; Upcoming Talks</title>
-      <link>https://mlpeschl.github.io/talk/</link>
+      <link>https://mlpeschl.com/talk/</link>
     </image>
     
   </channel>

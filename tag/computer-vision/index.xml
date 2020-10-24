@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Computer Vision | Markus Peschl</title>
-    <link>https://mlpeschl.github.io/tag/computer-vision/</link>
-      <atom:link href="https://mlpeschl.github.io/tag/computer-vision/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://mlpeschl.com/tag/computer-vision/</link>
+      <atom:link href="https://mlpeschl.com/tag/computer-vision/index.xml" rel="self" type="application/rss+xml" />
     <description>Computer Vision</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sat, 17 Oct 2020 18:36:42 +0200</lastBuildDate>
     <image>
-      <url>https://mlpeschl.github.io/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
+      <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
       <title>Computer Vision</title>
-      <link>https://mlpeschl.github.io/tag/computer-vision/</link>
+      <link>https://mlpeschl.com/tag/computer-vision/</link>
     </image>
     
     <item>
       <title>Deep Image Prior: Independently Reproduced in a few lines of PyTorch.</title>
-      <link>https://mlpeschl.github.io/post/deepimageprior/</link>
+      <link>https://mlpeschl.com/post/deepimageprior/</link>
       <pubDate>Sat, 17 Oct 2020 18:36:42 +0200</pubDate>
-      <guid>https://mlpeschl.github.io/post/deepimageprior/</guid>
+      <guid>https://mlpeschl.com/post/deepimageprior/</guid>
       <description>&lt;h2 id=&#34;authors&#34;&gt;Authors&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Markus Peschl&lt;/li&gt;

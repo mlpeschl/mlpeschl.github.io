@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Particle Filtering | Markus Peschl</title>
-    <link>https://mlpeschl.github.io/tag/particle-filtering/</link>
-      <atom:link href="https://mlpeschl.github.io/tag/particle-filtering/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://mlpeschl.com/tag/particle-filtering/</link>
+      <atom:link href="https://mlpeschl.com/tag/particle-filtering/index.xml" rel="self" type="application/rss+xml" />
     <description>Particle Filtering</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 20 Oct 2020 20:02:56 +0200</lastBuildDate>
     <image>
-      <url>https://mlpeschl.github.io/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
+      <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
       <title>Particle Filtering</title>
-      <link>https://mlpeschl.github.io/tag/particle-filtering/</link>
+      <link>https://mlpeschl.com/tag/particle-filtering/</link>
     </image>
     
     <item>
       <title>Making Sense of Particle Filtering for POMDPs (Part 1)</title>
-      <link>https://mlpeschl.github.io/post/particle_filtering_1/</link>
+      <link>https://mlpeschl.com/post/particle_filtering_1/</link>
       <pubDate>Tue, 20 Oct 2020 20:02:56 +0200</pubDate>
-      <guid>https://mlpeschl.github.io/post/particle_filtering_1/</guid>
+      <guid>https://mlpeschl.com/post/particle_filtering_1/</guid>
       <description>&lt;h2 id=&#34;before-you-read-source-code&#34;&gt;Before you read (source code)&lt;/h2&gt;
 &lt;p&gt;An open source Jupyter notebook including source code for this blog post is available. Click the link below to open an interactive version of the source code in your browser.
 &lt;a href=&#34;https://mybinder.org/v2/gh/mlpeschl/stat-notebooks/master?filepath=POMDP_Particle_Filters%2Fparticle%20filtering.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;img src=&#34;https://mybinder.org/badge_logo.svg&#34; alt=&#34;Binder&#34;&gt;&lt;/a&gt;&lt;/p&gt;

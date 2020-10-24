@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Markus Peschl</title>
-    <link>https://mlpeschl.github.io/</link>
-      <atom:link href="https://mlpeschl.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://mlpeschl.com/</link>
+      <atom:link href="https://mlpeschl.com/index.xml" rel="self" type="application/rss+xml" />
     <description>Markus Peschl</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 20 Oct 2020 20:02:56 +0200</lastBuildDate>
     <image>
-      <url>https://mlpeschl.github.io/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
+      <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
       <title>Markus Peschl</title>
-      <link>https://mlpeschl.github.io/</link>
+      <link>https://mlpeschl.com/</link>
     </image>
     
     <item>
       <title>Making Sense of Particle Filtering for POMDPs (Part 1)</title>
-      <link>https://mlpeschl.github.io/post/particle_filtering_1/</link>
+      <link>https://mlpeschl.com/post/particle_filtering_1/</link>
       <pubDate>Tue, 20 Oct 2020 20:02:56 +0200</pubDate>
-      <guid>https://mlpeschl.github.io/post/particle_filtering_1/</guid>
+      <guid>https://mlpeschl.com/post/particle_filtering_1/</guid>
       <description>&lt;h2 id=&#34;before-you-read-source-code&#34;&gt;Before you read (source code)&lt;/h2&gt;
 &lt;p&gt;An open source Jupyter notebook including source code for this blog post is available. Click the link below to open an interactive version of the source code in your browser.
 &lt;a href=&#34;https://mybinder.org/v2/gh/mlpeschl/stat-notebooks/master?filepath=POMDP_Particle_Filters%2Fparticle%20filtering.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;img src=&#34;https://mybinder.org/badge_logo.svg&#34; alt=&#34;Binder&#34;&gt;&lt;/a&gt;&lt;/p&gt;
@@ -93,9 +93,9 @@ $$w&#39; = O(o| s&#39;, a)w$$&lt;/p&gt;
     
     <item>
       <title>Deep Image Prior: Independently Reproduced in a few lines of PyTorch.</title>
-      <link>https://mlpeschl.github.io/post/deepimageprior/</link>
+      <link>https://mlpeschl.com/post/deepimageprior/</link>
       <pubDate>Sat, 17 Oct 2020 18:36:42 +0200</pubDate>
-      <guid>https://mlpeschl.github.io/post/deepimageprior/</guid>
+      <guid>https://mlpeschl.com/post/deepimageprior/</guid>
       <description>&lt;h2 id=&#34;authors&#34;&gt;Authors&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Markus Peschl&lt;/li&gt;
@@ -449,9 +449,9 @@ plt.imshow(output.cpu().view(3,512,512).permute(1,2,0).detach().numpy())
     
     <item>
       <title>Q&amp;A</title>
-      <link>https://mlpeschl.github.io/qna/</link>
+      <link>https://mlpeschl.com/qna/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://mlpeschl.github.io/qna/</guid>
+      <guid>https://mlpeschl.com/qna/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;What search engine do you use?&lt;/p&gt;

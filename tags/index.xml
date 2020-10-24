@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags | Markus Peschl</title>
-    <link>https://mlpeschl.github.io/tags/</link>
-      <atom:link href="https://mlpeschl.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://mlpeschl.com/tags/</link>
+      <atom:link href="https://mlpeschl.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <description>Tags</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 20 Oct 2020 20:02:56 +0200</lastBuildDate>
     <image>
-      <url>https://mlpeschl.github.io/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
+      <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
       <title>Tags</title>
-      <link>https://mlpeschl.github.io/tags/</link>
+      <link>https://mlpeschl.com/tags/</link>
     </image>
     
   </channel>
