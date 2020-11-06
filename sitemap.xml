@@ -3,37 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mlpeschl.com/post/tiny_adrqn/</loc>
+    <lastmod>2020-11-06T15:23:13+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.com/tag/deep-learning/</loc>
+    <lastmod>2020-11-06T15:23:13+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.com/</loc>
+    <lastmod>2020-11-06T15:23:13+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.com/tag/pomdp/</loc>
+    <lastmod>2020-11-06T15:23:13+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.com/post/</loc>
+    <lastmod>2020-11-06T15:23:13+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.com/tag/reinforcement-learning/</loc>
+    <lastmod>2020-11-06T15:23:13+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mlpeschl.com/tags/</loc>
+    <lastmod>2020-11-06T15:23:13+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mlpeschl.com/post/particle_filtering_1/</loc>
     <lastmod>2020-10-20T20:02:56+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mlpeschl.com/</loc>
-    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://mlpeschl.com/tag/particle-filtering/</loc>
-    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.com/tag/pomdp/</loc>
-    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.com/post/</loc>
-    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.com/tag/reinforcement-learning/</loc>
-    <lastmod>2020-10-20T20:02:56+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.com/tags/</loc>
     <lastmod>2020-10-20T20:02:56+02:00</lastmod>
   </url>
   
@@ -44,11 +54,6 @@
   
   <url>
     <loc>https://mlpeschl.com/post/deepimageprior/</loc>
-    <lastmod>2020-10-17T18:36:42+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mlpeschl.com/tag/deep-learning/</loc>
     <lastmod>2020-10-17T18:36:42+02:00</lastmod>
   </url>
   
