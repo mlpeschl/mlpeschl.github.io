@@ -60,7 +60,7 @@
   
   
   
-  <meta name="theme-color" content="#2a36cb">
+  <meta name="theme-color" content="#00A6D6">
   
 
   
@@ -325,7 +325,7 @@
   
   "publisher": {
     "@type": "Organization",
-    "name": "Markus Peschl",
+    "name": "TU Delft",
     "logo": {
       "@type": "ImageObject",
       "url": "https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_192x192_fill_lanczos_center_2.png"
@@ -685,8 +685,8 @@
 <p>Note: Enable GPU usage in the runtime settings for training with cuda.
 <a href="https://colab.research.google.com/github/mlpeschl/stat-notebooks/blob/master/Model_Free_RL/ADRQN.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
 <h1 id="introduction">Introduction</h1>
-<p>Deep Q networks have proven to be an easy to implement method for solving control problems in both continuous or large discrete state spaces. For instance, a highly cited paper by a group of Google Deepmind researchers [1] proposes the use of a deep (convolutional) neural network for approximating the optimal Q function in Atari games. Since then, numerous improvements to the deep Q network (DQN) algorithm have emerged, one notable example being the Rainbow agent [2], which combines fruitful approaches from different subfields of reinforcement learning, including distributional RL, multi-step targets and dueling networks.</p>
-<p>While the above efforts to improve upon the performance of DQNs have proven to be effective, most of the research focuses on fully observable environments, or at least introduces workarounds to overcome partial observability by combining multiple consecutive frames into a single observation [1]. If such design choices are not possible, one needs a different mechanism for keeping track of the history of observations when approximating the Q function with a neural network. A rather straight forward way to achieve this, is by including recurrence in the Q network, and this is exactly what the action-specific deep recurrent Q network (ADRQN) does [3].</p>
+<p>Deep Q networks have proven to be an easy to implement method for solving control problems in both continuous or large discrete state spaces. For instance, a highly cited paper by a group of Google Deepmind researchers [1] proposes the use of a deep (convolutional) neural network for approximating the optimal Q function in Atari games. Since then, numerous improvements to the deep Q network (DQN) algorithm have emerged, one notable example being the Rainbow agent [2], which combines fruitful approaches from different subfields of reinforcement learning including distributional RL, multi-step targets and dueling networks.</p>
+<p>While the above efforts to improve upon the performance of DQNs have proven to be effective, most of the research focuses on fully observable environments, or at least introduces workarounds to overcome partial observability by combining multiple consecutive frames into a single observation [1]. If such design choices are not possible, one needs a different mechanism for keeping track of the history of observations when approximating the Q function with a neural network. A rather straight forward way to achieve this, is by including recurrence in the Q network and this is exactly what the action-specific deep recurrent Q network (ADRQN) does [3].</p>
 <p>In this post, we will go through a simple PyTorch implementation of the ADRQN including a small scale experiment on classical control tasks of the OpenAI gym.</p>
 <h1 id="model-architecture">Model Architecture</h1>
 <p>The ADRQN [3] is a modification of the DQN algorithm, which introduces an intermediate LSTM layer for remembering action-observation pairs when dealing with partial observability. An outline of the originally proposed architecture can be seen below in figure 1.</p>
