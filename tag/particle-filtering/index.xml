@@ -13,7 +13,7 @@
     </image>
     
     <item>
-      <title>Making Sense of Particle Filtering for POMDPs (Part 1)</title>
+      <title>Making Sense of Particle Filtering for POMDPs</title>
       <link>https://mlpeschl.com/post/particle_filtering_1/</link>
       <pubDate>Tue, 20 Oct 2020 20:02:56 +0200</pubDate>
       <guid>https://mlpeschl.com/post/particle_filtering_1/</guid>
@@ -83,7 +83,7 @@ $$w&#39; = O(o| s&#39;, a)w$$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;This way, we could effectively keep track of likely state sequences $(s_0, s_1, \dots,)$ without ever needing to explicitly observe them.&lt;/p&gt;
 &lt;p&gt;It is important to keep in mind that the sequential importance sampling algorithm in the form it is presented above requires explicit knowledge of the state transition and observation model. In case these are available, particle filtering is a useful tool for approximating the exact posterior update $b_{a,o}(s&#39;)$. For example, in Partially Observable Monte-Carlo Planning, an extension of Monte-Carlo Tree Search for POMDPs [1], particle filtering is used to track the belief state while unrolling episodes through a generative model of the POMDP dynamics. When a model is not available, recent deep learning based approaches have been proposed, like deep variational reniforcement learning for POMDPs [2], which learns a deep generative model of the POMDP transition dynamics by sampling likely candidate state sequences through particle filtering. Similarly, particle filters have been used for keeping belief states in Bayesian reinforcement learning for large POMDPs which represent a distribution over possible POMDP models [3].&lt;/p&gt;
-&lt;p&gt;Alright, that&amp;rsquo;s it for now. In Parts 2 and 3 of this series, we will dive into more detail of applying particle filtering to POMDP control problems by using methods like the Bayes-Adaptive and deep variational frameworks.&lt;/p&gt;
+&lt;p&gt;Alright, that&amp;rsquo;s it for now. In possible sequels to this post, we will dive into more detail of applying particle filtering to POMDP control problems by using methods like the Bayes-Adaptive and deep variational frameworks.&lt;/p&gt;
 &lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
 &lt;p&gt;[1] Silver,D. and Veness, J. Monte-Carlo planning in large POMDPs. In &lt;em&gt;Advances in Neural Information Processing Systems&lt;/em&gt;, pages 2164-2172, 2010.&lt;/p&gt;
 &lt;p&gt;[2] Igl, M., Zintgraf, L., Le, T. A., Wood, F., and Whiteson, S. &lt;em&gt;Deep variational reinforcement learning for pomdps&lt;/em&gt;. arXiv:1806.02426, 2018.&lt;/p&gt;
