@@ -707,9 +707,12 @@ plt.imshow(output.cpu().view(3,512,512).permute(1,2,0).detach().numpy())
       <guid>https://mlpeschl.com/qna/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;What&amp;rsquo;s the best book you have recently read?&lt;/p&gt;
+&lt;p&gt;Any interesting books you recently read?&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;The Ethical Algorithm: The Science of Socially Aware Algorithm Design by Michael Kearns and Aaron Roth. The authors provide a concise overview and some thought provoking ideas of the subject for the non-technical reader in mind, yet maintain game-theoretic terminology and thinking throughout the book, which made it a very enjoyable read for me.&lt;/li&gt;
+&lt;li&gt;The Ethical Algorithm: The Science of Socially Aware Algorithm Design by Michael Kearns and Aaron Roth. Enjoyable, non-technical but yet insightful to read with a strong touch of
+game theory. Highly recommended for anyone who wants to get a better idea of how we can make AI systems optimize for the right things going forward.&lt;/li&gt;
+&lt;li&gt;AI Ethics by Mark Coeckelbergh. A broad and quite concise overview of the field, talking not only about ethical challenges arising from AI, but also providing a
+backstory of all the different AI narratives that are common in the literature nowadays.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
