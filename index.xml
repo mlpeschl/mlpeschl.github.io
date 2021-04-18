@@ -114,7 +114,7 @@ $$\mathcal{F} := \begin{Bmatrix}J_\mathbf{r}(\pi) | \pi \in \Pi \wedge \nexists 
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;discussion&#34;&gt;Discussion&lt;/h2&gt;
+&lt;h2 id=&#34;3-discussion&#34;&gt;3. Discussion&lt;/h2&gt;
 &lt;p&gt;The illustrations above are mostly motivated from a practical point of view, namely: What kind of formulation is suitable in which kinds of settings? In general, one could argue that
 multi-objective RL is slightly more general than constrained RL, albeit both have their respective advantages and disadvantages. Lemma $1$ tells us that if we optimize for a complete
 Pareto boundary, then this will automatically include solutions for constrained problems. When you think about it, this is a rather trivial statement. Pareto optimal solutions
