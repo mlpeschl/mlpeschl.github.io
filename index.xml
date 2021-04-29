@@ -5,12 +5,20 @@
     <link>https://mlpeschl.com/</link>
       <atom:link href="https://mlpeschl.com/index.xml" rel="self" type="application/rss+xml" />
     <description>Markus Peschl</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sat, 17 Apr 2021 21:26:22 +0200</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 29 Apr 2021 18:11:45 +0200</lastBuildDate>
     <image>
       <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
       <title>Markus Peschl</title>
       <link>https://mlpeschl.com/</link>
     </image>
+    
+    <item>
+      <title>Training for Implicit Norms in Deep Reinforcement Learning Agents through Adversarial Multi-Objective Reward Optimization (Extended Abstract)</title>
+      <link>https://mlpeschl.com/publication/moral-rl-aies/</link>
+      <pubDate>Thu, 29 Apr 2021 18:11:45 +0200</pubDate>
+      <guid>https://mlpeschl.com/publication/moral-rl-aies/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Constrained versus Multi-Objective Reinforcement Learning. A Fundamental Difference?</title>
