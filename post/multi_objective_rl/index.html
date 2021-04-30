@@ -733,12 +733,8 @@ $$\mathcal{F} := \begin{Bmatrix}J_\mathbf{r}(\pi) | \pi \in \Pi \wedge \nexists 
 <th style="text-align:center">Figure 1. Taken from Yang et al. [4]. (a) The Pareto frontier might not be convex. In this example, the CCS consists of points A-H but does not include K, whereas A-K form the Pareto boundary. (b) given a preference vector $\boldsymbol{\omega}$ the optimal solution will be a point on the CCS that maximizes the projection onto $\boldsymbol{\omega}$.</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="paretoccs.png" alt="space-1.jpg"></td>
-</tr>
-</tbody>
 </table>
+<p><img src="paretoccs.png" alt="space-1.jpg"></p>
 <h2 id="2-whats-the-difference">2. What&rsquo;s the Difference?</h2>
 <p>When comparing the multi-objective and the constrained case, it immediately becomes apparent that there is a close connection between the two approaches. To formalize this connection, we will now consider a fixed MDP $\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, \mathcal{T}, r \rangle$ that we extend by a single constraint function $c\geq 0$ and a hyperparameter $d\in\mathbb{R}$. We will call this CMDP $\mathcal{M_C}$. At the same time, consider the MOMDP $\mathcal{M}_{MO}$ obtained by extending $\mathcal{M}$ by a second reward function $r_2 = -c$. We would now like to investigate, when an optimal solution $\pi^* $ in $\mathcal{M_C}$ can also be obtained in $\mathcal{M}_{MO}$ when given a specific preference. We from now on denote $\Pi^*_C(d)$ the set of optimal policies for $\mathcal{M_C}$ (depending on the hyperparameter $d$). Formally, we would like to find out the following:</p>
 <p><strong>Question:</strong> For which values of $d$ does $\Pi^* _C(d) $  have a non empty intersection with policies on the convex coverage set $\mathcal{F^*}$ of $\mathcal{M}_{MO}$?</p>
@@ -755,12 +751,8 @@ $$\mathcal{F} := \begin{Bmatrix}J_\mathbf{r}(\pi) | \pi \in \Pi \wedge \nexists 
 <th style="text-align:center">Figure 2: When the CCS is not equal to the Pareto boundary, the CMDP solution will generally not be recoverable through linear preferences. In this example $\pi^*$ is an optimal CMDP solution which does not lie on the Pareto boundary $\mathcal{F}$. However, as lemma $1$ suggests, we can find an optimal $\tilde{\pi}^ * $ that does lie in $\mathcal{F}$, which yields higher $r_2$ (lower constraint cost) but the same original reward $r_1$. Since in this case the CCS consists of A-E but does not include $\tilde{\pi}^ * $, the scalarized reward $\boldsymbol{\omega}^T\mathbf{r}$ does not get maximized by $\tilde{\pi}^ *$, but by a point on the CCS (in this example that is C).</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="pareto_ccs_sketch.jpg" alt="space-1.jpg"></td>
-</tr>
-</tbody>
 </table>
+<p><img src="pareto_ccs_sketch.png" alt="space-1.jpg"></p>
 <h2 id="3-discussion">3. Discussion</h2>
 <p>The illustrations above are mostly motivated from a practical point of view, namely: What kind of formulation is suitable in which kinds of settings? In general, one could argue that
 multi-objective RL is slightly more general than constrained RL, albeit both have their respective advantages and disadvantages. Lemma $1$ tells us that if we optimize for a complete
