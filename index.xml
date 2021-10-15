@@ -835,21 +835,10 @@ plt.imshow(output.cpu().view(3,512,512).permute(1,2,0).detach().numpy())
       <guid>https://mlpeschl.com/qna/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Any interesting books you recently read?&lt;/p&gt;
+&lt;p&gt;Recent book recommendations?&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;The Ethical Algorithm: The Science of Socially Aware Algorithm Design by Michael Kearns and Aaron Roth. Enjoyable, non-technical but yet insightful to read with a strong touch of
-game theory. Highly recommended for anyone who wants to get a better idea of how we can make AI systems optimize for the right things going forward.&lt;/li&gt;
-&lt;li&gt;AI Ethics by Mark Coeckelbergh. A broad and quite concise overview of the field, talking not only about ethical challenges arising from AI, but also providing a
-backstory of all the different AI narratives that are common in the literature nowadays.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;What search engine do you use?&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Fetching news from one source only is usually quite one-sided and I think the same goes for
-search engines (at the moment). That&amp;rsquo;s why I switch them up regularly, using a good mix of Google and DuckDuckGo.
-I like DuckDuckGo for privacy reasons and it works quite well for plain and easy searches. When I can&amp;rsquo;t find something or I feel like I want
-more personalized content, I go for Google (of course).&lt;/li&gt;
+&lt;li&gt;A Thousand Brains: A New Theory of Intelligence by Jeff Hawkins.&lt;/li&gt;
+&lt;li&gt;The Ethical Algorithm: The Science of Socially Aware Algorithm Design by Michael Kearns and Aaron Roth.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -871,12 +860,6 @@ more personalized content, I go for Google (of course).&lt;/li&gt;
 &lt;li&gt;Schumann&amp;rsquo;s &lt;a href=&#34;https://www.youtube.com/watch?v=Ghjhk6Es6D8&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Papillons&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;What&amp;rsquo;s the most useful theorem?&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;If I really have to choose, I would say I am a big fan of the &lt;a href=&#34;https://en.wikipedia.org/wiki/Dominated_convergence_theorem&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;dominated convergence theorem&lt;/a&gt;. It&amp;rsquo;s easy enough to understand with undergraduate measure theory and opens a vast and versatile area of applications. On one day you use it to find the limit of an infinite series and on another day you use it to prove completeness of a metric space. Quite beautiful if you ask me.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
