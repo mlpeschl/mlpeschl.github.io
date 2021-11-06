@@ -829,24 +829,11 @@ plt.imshow(output.cpu().view(3,512,512).permute(1,2,0).detach().numpy())
     </item>
     
     <item>
-      <title>Q&amp;A</title>
+      <title>Personal</title>
       <link>https://mlpeschl.com/qna/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://mlpeschl.com/qna/</guid>
       <description>&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Recent book recommendations?&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;A Thousand Brains: A New Theory of Intelligence by Jeff Hawkins.&lt;/li&gt;
-&lt;li&gt;The Ethical Algorithm: The Science of Socially Aware Algorithm Design by Michael Kearns and Aaron Roth.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Favorite Linux distributions?&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Ubuntu for ease of use, Arch Linux for customizability.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Which songs do you like to play on the piano?&lt;/p&gt;
 &lt;ul&gt;
