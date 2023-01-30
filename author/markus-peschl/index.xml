@@ -5,20 +5,12 @@
     <link>https://mlpeschl.com/author/markus-peschl/</link>
       <atom:link href="https://mlpeschl.com/author/markus-peschl/index.xml" rel="self" type="application/rss+xml" />
     <description>Markus Peschl</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 29 Apr 2021 18:11:45 +0200</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
     <image>
-      <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_2.png</url>
+      <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_3.png</url>
       <title>Markus Peschl</title>
       <link>https://mlpeschl.com/author/markus-peschl/</link>
     </image>
-    
-    <item>
-      <title>MORAL: Aligning AI with Human Norms through Multi-Objective Reinforced Active Learning</title>
-      <link>https://mlpeschl.com/publication/moral-rl/</link>
-      <pubDate>Thu, 29 Apr 2021 18:11:45 +0200</pubDate>
-      <guid>https://mlpeschl.com/publication/moral-rl/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>
