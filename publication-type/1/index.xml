@@ -5,12 +5,20 @@
     <link>https://mlpeschl.com/publication-type/1/</link>
       <atom:link href="https://mlpeschl.com/publication-type/1/index.xml" rel="self" type="application/rss+xml" />
     <description>1</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 27 Dec 2022 22:49:21 -0800</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 02 Feb 2023 00:16:45 +0100</lastBuildDate>
     <image>
       <url>https://mlpeschl.com/images/icon_hu6a98d456223992a97ada131f146ee6ab_65108_512x512_fill_lanczos_center_3.png</url>
       <title>1</title>
       <link>https://mlpeschl.com/publication-type/1/</link>
     </image>
+    
+    <item>
+      <title>Robust Scheduling with GFlowNets</title>
+      <link>https://mlpeschl.com/publication/gflownet_scheduling/</link>
+      <pubDate>Thu, 02 Feb 2023 00:16:45 +0100</pubDate>
+      <guid>https://mlpeschl.com/publication/gflownet_scheduling/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Learning Perturbations for Soft-Output Linear MIMO Demappers</title>
