@@ -141,3 +141,68 @@ h2 {
 span.highlight {
   background-color: #ffffd0;
 }
+
+/* Phone layout: stack the table cells vertically.
+   !important is needed to override the inline styles in index.html. */
+@media (max-width: 600px) {
+  tr.bio {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  td.bio-text,
+  td.bio-photo,
+  td.paper-img,
+  td.paper-text {
+    display: block;
+    width: auto !important;
+    max-width: none !important;
+    box-sizing: border-box;
+  }
+
+  td.bio-text {
+    padding: 0 16px 8px !important;
+  }
+
+  td.bio-photo {
+    padding: 16px 16px 0 !important;
+    text-align: center;
+  }
+
+  td.bio-photo img {
+    width: 60% !important;
+    max-width: 220px !important;
+  }
+
+  td.section-title {
+    padding: 16px 16px 0 !important;
+  }
+
+  td.paper-img {
+    padding: 24px 16px 8px !important;
+  }
+
+  td.paper-text {
+    padding: 0 16px 16px !important;
+  }
+
+  .one {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .two {
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+  }
+
+  .one img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
