@@ -5,6 +5,8 @@
 // last one. Past/present/upcoming all follow from the dates, so nothing needs updating;
 // to add a conference, append it to STOPS with its dates. Logos are drawn in LOGOS.
 // Preview another day with ?date=YYYY-MM-DD in the URL.
+// Each stop is also a button that filters the paper list below the scene to that
+// conference's paper (papers are matched by their data-stop attribute, e.g. "iclr-2025").
 (function () {
   const STOPS = [
     { name: 'AAMAS', year: 2022, logo: 'scales', start: '2022-05-09', end: '2022-05-13' },     // MORAL
@@ -22,6 +24,7 @@
   const override = new URLSearchParams(location.search).get('date');
   const today = override && /^\d{4}-\d{2}-\d{2}$/.test(override) ? parseDay(override) : Date.now();
   STOPS.forEach((st) => {
+    st.id = `${st.name.toLowerCase()}-${st.year}`;
     st.from = parseDay(st.start) - SLACK;
     st.to = parseDay(st.end) + DAY + SLACK;
     st.upcoming = today < st.from;
@@ -568,14 +571,18 @@
       class: stop.upcoming ? 'j-pad j-upcoming' : 'j-pad',
     }, card));
 
-    // labels under the card: name, then year, plus a NOW badge for the present stop
+    // labels under the card: name, then year (on a pill that lights up on hover or when
+    // selected), plus a NOW badge for the present stop
     let badge = null;
-    STOPS.forEach((stop, i) => {
+    const labels = STOPS.map((stop, i) => {
       const lower = stagger && i % 2 === 1;
       const nameY = CARD_H + 1.5 + font * 1.3 + (lower ? font * 3.2 : 0);
-      el('text', { x: xs[i], y: nameY, 'font-size': font, class: 'j-name', 'text-anchor': 'middle' }, svg)
+      const label = el('g', { class: 'j-label' }, svg);
+      const pw = Math.max(stop.name.length, 4) * font + font * 1.4, ph = font * 3.1;
+      el('rect', { x: xs[i] - pw / 2, y: nameY - font * 1.35, width: pw, height: ph, rx: font * 0.6, class: 'j-pill' }, label);
+      el('text', { x: xs[i], y: nameY, 'font-size': font, class: 'j-name', 'text-anchor': 'middle' }, label)
         .textContent = stop.name;
-      el('text', { x: xs[i], y: nameY + font * 1.5, 'font-size': font, class: 'j-year', 'text-anchor': 'middle' }, svg)
+      el('text', { x: xs[i], y: nameY + font * 1.5, 'font-size': font, class: 'j-year', 'text-anchor': 'middle' }, label)
         .textContent = stop.year;
       if (i === present) {
         const bw = font * 2.9, bh = font * 1.25, by = nameY + font * 2.1;
@@ -585,6 +592,7 @@
           x: xs[i], y: by + bh * 0.5 + font * 0.3, 'font-size': font * 0.65, 'text-anchor': 'middle',
         }, badge).textContent = 'NOW';
       }
+      return label;
     });
 
     // A mover is one animated sprite: it shows the cycle frame for the distance travelled
@@ -608,6 +616,33 @@
       { gap: 18, lag: 450, place: mover(SPRITES.go2, GO2_CX, 1.6) },
     ];
     const placeBike = mover(SPRITES.bike, MAGE_CX, 1.4);
+
+    // invisible hit areas make each stop (logo, path marker and label) a button
+    const half = xs.length > 1 ? (xs[1] - xs[0]) / 2 : W / 2;
+    const hits = STOPS.map((stop, i) => {
+      const hit = el('rect', {
+        x: xs[i] - half, y: HILL_TOP - 20, width: half * 2, height: H - (HILL_TOP - 20),
+        class: 'j-hit', tabindex: 0, role: 'button', 'aria-pressed': 'false',
+        'aria-label': `${stop.name} ${stop.year}: show paper`,
+      }, svg);
+      const hover = (on) => [logos[i], labels[i]].forEach((e) => e.classList.toggle('j-hover', on));
+      hit.addEventListener('mouseenter', () => hover(true));
+      hit.addEventListener('mouseleave', () => hover(false));
+      hit.addEventListener('focus', () => hover(true));
+      hit.addEventListener('blur', () => hover(false));
+      hit.addEventListener('click', () => selectStop(stop.id));
+      hit.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectStop(stop.id); }
+      });
+      return hit;
+    });
+    markStops = (id) => STOPS.forEach((stop, i) => {
+      const on = stop.id === id;
+      logos[i].classList.toggle('j-selected', on);
+      labels[i].classList.toggle('j-selected', on);
+      hits[i].setAttribute('aria-pressed', String(on));
+    });
+    markStops(selected);
 
     root.appendChild(svg);
 
@@ -661,6 +696,38 @@
     }
     frameId = requestAnimationFrame(tick);
   }
+
+  // ---------- paper filter ----------
+  // Clicking a stop shows only that conference's paper (clicking it again, or "Show all",
+  // shows everything). The "coming soon" card only appears for its own stop.
+  let selected = null;
+  let markStops = () => {};
+  const papers = [...document.querySelectorAll('.paper')];
+  const filterHint = document.querySelector('.paper-filter-hint');
+  const filterActive = document.querySelector('.paper-filter-active');
+  const filterName = document.querySelector('.paper-filter-name');
+  const filterClear = document.querySelector('.paper-filter-clear');
+
+  function applyFilter() {
+    papers.forEach((paper) => {
+      const soon = paper.classList.contains('paper-soon');
+      const match = selected !== null && paper.dataset.stop === selected;
+      paper.classList.toggle('is-hidden', selected ? !match : soon);
+      paper.classList.toggle('is-match', match && !soon);
+    });
+    const stop = STOPS.find((st) => st.id === selected);
+    if (filterHint) filterHint.hidden = !!stop;
+    if (filterActive) filterActive.hidden = !stop;
+    if (filterName && stop) filterName.textContent = `${stop.name} ${stop.year}`;
+    markStops(selected);
+  }
+
+  function selectStop(id) {
+    selected = selected === id ? null : id;
+    applyFilter();
+  }
+
+  if (filterClear) filterClear.addEventListener('click', () => { selected = null; applyFilter(); });
 
   const render = () => build(narrowQuery.matches ? LAYOUTS.narrow : LAYOUTS.wide);
   narrowQuery.addEventListener('change', render);

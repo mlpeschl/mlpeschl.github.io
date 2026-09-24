@@ -9,9 +9,9 @@
     <meta name="author" content="Markus Peschl">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="images/favicon/favicon-32x32.png" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css?v=8">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css?v=9">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
-    <script src="journey.js?v=8" defer></script>
+    <script src="journey.js?v=9" defer></script>
     
   </head>
 
@@ -45,300 +45,258 @@
               </td>
             </tr>
           </tbody></table>
-          <h2 class="journey-title">Conferences</h2>
+          <h2 class="journey-title">Research</h2>
           <div id="journey" class="journey"></div>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-              <tr>
-              <td class="section-title" style="padding:20px;width:100%;vertical-align:middle">
-                <h2>Research</h2>
-              </td>
-            </tr>
-          </tbody></table>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <div class="paper-filter" aria-live="polite">
+            <span class="paper-filter-hint">&#8593; Click a conference on the path to see its paper</span>
+            <span class="paper-filter-active" hidden>Showing <strong class="paper-filter-name"></strong>
+              <button type="button" class="paper-filter-clear">Show all</button></span>
+          </div>
 
+          <div class="papers">
 
-    <tr>
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/code2actgif.gif' width=118%>            
-					</div>
+    <article class="paper" data-stop="iros-2026">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <img src="images/code2actgif.gif" width="118%" alt="">
+          </div>
         </div>
-        <script type="text/javascript">
-          function gatr_start() {
-            document.getElementById('gatr_image').style.opacity = "1";
-          }
-
-          function gatr_stop() {
-            document.getElementById('gatr_image').style.opacity = "0";
-          }
-          gatr_stop()
-        </script>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://www.arxiv.org/abs/2509.24917">
-      <span class="papertitle">From Code to Action: Hierarchical Learning of Diffusion-VLM Policies
-
-</span>
-        </a>
-        <br>
-        <strong>Markus Peschl</strong>,
-        <a href="https://mazpie.github.io/">Pietro Mazzaglia</a>,
-        <a href="https://scholar.google.com/citations?user=FSS9JKgAAAAJ&hl=en">Daniel Dijkman</a>, 
-        <br>
-        IROS 2026 <em>(International Conference on Intelligent Robots and Systems)</em>
-        <br>
-        <a href="https://www.arxiv.org/abs/2509.24917">arXiv</a>
-        <p style="margin-top:4px;">
-          We use VLMs and diffusion policies with API subroutines as structured supervision to improve generalization and long-horizon robotic control.
-        </p>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/hyt_teaser.png' width=118%>            
-					</div>
+        <div class="paper-text">
+          <a href="https://www.arxiv.org/abs/2509.24917">
+            <span class="papertitle">From Code to Action: Hierarchical Learning of Diffusion-VLM Policies</span>
+          </a>
+          <br>
+          <strong>Markus Peschl</strong>,
+          <a href="https://mazpie.github.io/">Pietro Mazzaglia</a>,
+          <a href="https://scholar.google.com/citations?user=FSS9JKgAAAAJ&hl=en">Daniel Dijkman</a>,
+          <br>
+          IROS 2026 <em>(International Conference on Intelligent Robots and Systems)</em>
+          <br>
+          <a href="https://www.arxiv.org/abs/2509.24917">arXiv</a>
+          <p style="margin-top:4px;">
+            We use VLMs and diffusion policies with API subroutines as structured supervision to improve generalization and long-horizon robotic control.
+          </p>
         </div>
-        <script type="text/javascript">
-          function gatr_start() {
-            document.getElementById('gatr_image').style.opacity = "1";
-          }
+      </div>
+    </article>
 
-          function gatr_stop() {
-            document.getElementById('gatr_image').style.opacity = "0";
-          }
-          gatr_stop()
-        </script>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://arxiv.org/pdf/2510.00600">
-      <span class="papertitle"> Hybrid Training for Vision-Language-Action Models
-
-</span>
-        </a>
-        <br>
-        <a href="https://mazpie.github.io/">Pietro Mazzaglia</a>,
-        <a href="https://csancaktar.github.io/">Cansu Sancaktar</a>, 
-        <strong>Markus Peschl</strong>,
-        <a href="https://scholar.google.com/citations?user=FSS9JKgAAAAJ&hl=en">Daniel Dijkman</a>, 
-        <br>
-        ICLR 2026 <em>(International Conference on Learning Representations)</em>
-        <br>
-        <a href="https://openreview.net/forum?id=IBJtOltTbx">OpenReview</a> /
-        <a href="https://arxiv.org/pdf/2510.00600">arXiv</a>
-        <p style="margin-top:4px;">
-          Hybrid Training (HyT) lets Vision-Language-Action models learn from chain-of-thought reasoning to boost performance while allowing faster, thought-free inference when needed.
-        </p>
-      </td>
-    </tr>
-
-
-    <tr>
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/oat_vla_cropped.gif' width=118%>            
-					</div>
+    <article class="paper" data-stop="iclr-2026">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <img src="images/hyt_teaser.png" width="118%" alt="">
+          </div>
         </div>
-        <script type="text/javascript">
-          function gatr_start() {
-            document.getElementById('gatr_image').style.opacity = "1";
-          }
-
-          function gatr_stop() {
-            document.getElementById('gatr_image').style.opacity = "0";
-          }
-          gatr_stop()
-        </script>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://openreview.net/pdf?id=Ict1OjU9gl">
-      <span class="papertitle">Focusing on What Matters: Object-Agent-centric Tokenization for Vision Language Action models
-
-
-</span>
-        </a>
-        <br>
-        <a href="https://rokas-bendikas.github.io/">Rokas Bendikas</a>,
-        <a href="https://scholar.google.com/citations?user=FSS9JKgAAAAJ&hl=en">Daniel Dijkman</a>, 
-        <strong>Markus Peschl</strong>,
-        <a href="https://www.sanjayharesh.com/">Sanjay Haresh</a>,
-        <a href="https://mazpie.github.io/">Pietro Mazzaglia</a>,
-        <br>
-        CoRL 2025 <em>(Conference on Robot Learning)</em>
-        <br>
-        <a href="https://openreview.net/forum?id=Ict1OjU9gl#discussion">OpenReview</a>
-        <p style="margin-top:4px;">
-          Introducing Oat-VLA: Cut visual tokens for VLAs and train twice as fast as OpenVLA while achieving better real-world performance.
-        </p>
-      </td>
-    </tr>
-
-    <tr onmouseout="gatr_stop()" onmouseover="gatr_start()">
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <div class="two" id='gatr_image'>
-					  <img src='images/wigatr_teaser_2.png' width=118%>
-					</div>
-          <img src='images/wigatr_teaser.png' width=118%>
+        <div class="paper-text">
+          <a href="https://arxiv.org/pdf/2510.00600">
+            <span class="papertitle">Hybrid Training for Vision-Language-Action Models</span>
+          </a>
+          <br>
+          <a href="https://mazpie.github.io/">Pietro Mazzaglia</a>,
+          <a href="https://csancaktar.github.io/">Cansu Sancaktar</a>,
+          <strong>Markus Peschl</strong>,
+          <a href="https://scholar.google.com/citations?user=FSS9JKgAAAAJ&hl=en">Daniel Dijkman</a>,
+          <br>
+          ICLR 2026 <em>(International Conference on Learning Representations)</em>
+          <br>
+          <a href="https://openreview.net/forum?id=IBJtOltTbx">OpenReview</a> /
+          <a href="https://arxiv.org/pdf/2510.00600">arXiv</a>
+          <p style="margin-top:4px;">
+            Hybrid Training (HyT) lets Vision-Language-Action models learn from chain-of-thought reasoning to boost performance while allowing faster, thought-free inference when needed.
+          </p>
         </div>
-        <script type="text/javascript">
-          function gatr_start() {
-            document.getElementById('gatr_image').style.opacity = "1";
-          }
+      </div>
+    </article>
 
-          function gatr_stop() {
-            document.getElementById('gatr_image').style.opacity = "0";
-          }
-          gatr_stop()
-        </script>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://arxiv.org/abs/2406.14995">
-      <span class="papertitle">Differentiable and Learnable Wireless Simulation with Geometric Transformers
-
-</span>
-        </a>
-        <br>
-        <a href="https://scholar.google.com/citations?user=GBRDLBgAAAAJ&hl=nl">Thomas Hehn</a>, 
-        <strong>Markus Peschl</strong>,
-        <a href="https://tribhuvanesh.github.io/">Tribhuvanesh Orekondy</a>,
-        <a href="https://arashbehboodi.github.io/">Arash Behboodi</a>,
-        <a href="https://johannbrehmer.github.io/">Johann Brehmer</a>,
-        <br>
-        ICLR 2025 <em>(International Conference on Learning Representations)</em>
-        <br>
-        <a href="https://github.com/Qualcomm-AI-research/Wi-GATr">GitHub</a> /
-        <a href="https://arxiv.org/abs/2406.14995">arXiv</a>
-        <p style="margin-top:4px;">
-          A Geometric Algebra Transformer "WiGATr" for learning an E(3) equivariant simulator of wireless signal transmission. We test WiGATr as a predictive model as well as a diffusion model of signal and 3D geometry. 
-        </p>
-      </td>
-    </tr>
-
-
-    <tr>
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/steiner_teaser.png' width=118%>
+    <article class="paper" data-stop="corl-2025">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <img src="images/oat_vla_cropped.gif" width="118%" alt="">
+          </div>
         </div>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://arxiv.org/abs/2407.03792">
-			<span class="papertitle">NeuroSteiner: A Graph Transformer for Wirelength Estimation
-
-</span>
-        </a>
-        <br>
-				<a href="https://sahilm1992.github.io/about/">Sahil Manchanda</a>, 
-				<a href="https://scholar.google.nl/citations?user=_s0aBW0AAAAJ&hl=nl">Dana Kianfar</a>,
-        <strong>Markus Peschl</strong>,
-        <a href="https://www.linkedin.com/in/romainlepert/?originalSubdomain=nl/">Romain Lepert</a>,
-        <a href="https://deff.ch/">Michaël Defferrard</a>,
-				<br>
-        <em>4th AAAI Workshop on AI to Accelerate Science and Engineering</em>
-        <br>
-        <a href="https://arxiv.org/abs/2407.03792">arXiv</a>
-        <p style="margin-top:4px;">
-          Using graph transformers to predict Steiner points in a hybrid fashion to tackle the Steiner Tree problem in physical design (chip design).
-        </p>
-      </td>
-    </tr>
-
-    <tr onmouseout="gfn_stop()" onmouseover="gfn_start()">
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <div class="two" id='gfn_image'>
-					  <img src='images/gfn_schedule_teaser_2.png' width=118%>
-					</div>
-
-          <img src='images/gfn_schedule_teaser.png' width=118%>
+        <div class="paper-text">
+          <a href="https://openreview.net/pdf?id=Ict1OjU9gl">
+            <span class="papertitle">Focusing on What Matters: Object-Agent-centric Tokenization for Vision Language Action models</span>
+          </a>
+          <br>
+          <a href="https://rokas-bendikas.github.io/">Rokas Bendikas</a>,
+          <a href="https://scholar.google.com/citations?user=FSS9JKgAAAAJ&hl=en">Daniel Dijkman</a>,
+          <strong>Markus Peschl</strong>,
+          <a href="https://www.sanjayharesh.com/">Sanjay Haresh</a>,
+          <a href="https://mazpie.github.io/">Pietro Mazzaglia</a>,
+          <br>
+          CoRL 2025 <em>(Conference on Robot Learning)</em>
+          <br>
+          <a href="https://openreview.net/forum?id=Ict1OjU9gl#discussion">OpenReview</a>
+          <p style="margin-top:4px;">
+            Introducing Oat-VLA: Cut visual tokens for VLAs and train twice as fast as OpenVLA while achieving better real-world performance.
+          </p>
         </div>
-        <script type="text/javascript">
-          function gfn_start() {
-            document.getElementById('gfn_image').style.opacity = "1";
-          }
+      </div>
+    </article>
 
-          function gfn_stop() {
-            document.getElementById('gfn_image').style.opacity = "0";
-          }
-          gfn_stop()
-        </script>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://arxiv.org/abs/2302.05446/">
-			<span class="papertitle">Robust scheduling with GFlowNets
-</span>
-        </a>
-        <br>
-				<a href="https://davzha.netlify.app/">David W Zhang</a>, 
-				<a href="https://corradorainone.wordpress.com//">Corrado Rainone</a>,
-        <strong>Markus Peschl</strong>,
-        <a href="https://profiles.imperial.ac.uk/r.bondesan/">Roberto Bondesan</a>,
-				<br>
-        ICLR 2023 <em>(International Conference on Learning Representations)</em>
-        <br>
-        <a href="https://openreview.net/forum?id=ZBUthI6wK9h">OpenReview</a>
-        /
-        <a href="https://arxiv.org/abs/2302.05446">arXiv</a>
-        <p style="margin-top:4px;">
-				We use GFlowNets to tackle the NP-hard problem of computation graph scheduling by combining a temparature conditioned policy with top-k sampling.
-        </p>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/teaser_mimo.png' width=100%>
+    <article class="paper" data-stop="iclr-2025">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <div class="two">
+              <img src="images/wigatr_teaser_2.png" width="118%" alt="">
+            </div>
+            <img src="images/wigatr_teaser.png" width="118%" alt="">
+          </div>
         </div>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://arxiv.org/abs/2209.00529">
-			<span class="papertitle">Learning Perturbations for Soft-Output Linear MIMO Demappers
-</span>
-        </a>
-        <br>
-				<a href="https://danielewworrall.github.io/">Daniel E. Worrall</a>, 
-        <strong>Markus Peschl</strong>,
-        <a href="https://arashbehboodi.github.io/">Arash Behboodi</a>,
-        <a href="https://profiles.imperial.ac.uk/r.bondesan/">Roberto Bondesan</a>,
-				<br>
-        GLOBECOM 2022 <em>(IEEE Global Communications Conference)</em>
-        <br>
-        <a href="https://ieeexplore.ieee.org/abstract/document/10001724">IEEE</a>
-        /
-        <a href="https://arxiv.org/abs/2209.00529">arXiv</a>
-        <p style="margin-top:4px;">
-				We combine lattice reduction, Bayesian optimization and a stochastic sampler to arrive at a highly efficient, yet accurate linear MIMO demapper.
-        </p>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="paper-img" style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/moral_teaser.png' width=118%>
+        <div class="paper-text">
+          <a href="https://arxiv.org/abs/2406.14995">
+            <span class="papertitle">Differentiable and Learnable Wireless Simulation with Geometric Transformers</span>
+          </a>
+          <br>
+          <a href="https://scholar.google.com/citations?user=GBRDLBgAAAAJ&hl=nl">Thomas Hehn</a>,
+          <strong>Markus Peschl</strong>,
+          <a href="https://tribhuvanesh.github.io/">Tribhuvanesh Orekondy</a>,
+          <a href="https://arashbehboodi.github.io/">Arash Behboodi</a>,
+          <a href="https://johannbrehmer.github.io/">Johann Brehmer</a>,
+          <br>
+          ICLR 2025 <em>(International Conference on Learning Representations)</em>
+          <br>
+          <a href="https://github.com/Qualcomm-AI-research/Wi-GATr">GitHub</a> /
+          <a href="https://arxiv.org/abs/2406.14995">arXiv</a>
+          <p style="margin-top:4px;">
+            A Geometric Algebra Transformer "WiGATr" for learning an E(3) equivariant simulator of wireless signal transmission. We test WiGATr as a predictive model as well as a diffusion model of signal and 3D geometry.
+          </p>
         </div>
-      </td>
-      <td class="paper-text" style="padding:20px;width:75%;vertical-align:middle">
-        <a href="https://arxiv.org/abs/2201.00012">
-			<span class="papertitle">MORAL: Aligning AI with Human Norms through Multi-Objective Reinforced Active Learning
-</span>
-        </a>
-        <br>
-        <strong>Markus Peschl</strong>,
-        <a href="https://www.tudelft.nl/aitech/our-team/arkady-zgonnikov">Arkady Zgonnikov</a>,
-        <a href="https://www.fransoliehoek.net/wp/">Frans A Oliehoek</a>,
-        <a href="https://lucianosiebert.wordpress.com/">Luciano C Siebert</a>,
-				<br>
-        AAMAS 2022 <em>(International Conference on Autonomous Agents and Multiagent Systems)</em>
-        <br>
-        <a href="https://arxiv.org/abs/2201.00012">arXiv</a>
-        <p style="margin-top:4px;">
-				AI alignment is challenging due to a multitude of different and possibly conflicting values present in human feedback. We propose to overcome this challenge with a multi-objective agent that actively learns user preferences.
-        </p>
-      </td>
-    </tr>
+      </div>
+    </article>
+
+    <article class="paper">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <img src="images/steiner_teaser.png" width="118%" alt="">
+          </div>
+        </div>
+        <div class="paper-text">
+          <a href="https://arxiv.org/abs/2407.03792">
+            <span class="papertitle">NeuroSteiner: A Graph Transformer for Wirelength Estimation</span>
+          </a>
+          <br>
+          <a href="https://sahilm1992.github.io/about/">Sahil Manchanda</a>,
+          <a href="https://scholar.google.nl/citations?user=_s0aBW0AAAAJ&hl=nl">Dana Kianfar</a>,
+          <strong>Markus Peschl</strong>,
+          <a href="https://www.linkedin.com/in/romainlepert/?originalSubdomain=nl/">Romain Lepert</a>,
+          <a href="https://deff.ch/">Michaël Defferrard</a>,
+          <br>
+          <em>4th AAAI Workshop on AI to Accelerate Science and Engineering</em>
+          <br>
+          <a href="https://arxiv.org/abs/2407.03792">arXiv</a>
+          <p style="margin-top:4px;">
+            Using graph transformers to predict Steiner points in a hybrid fashion to tackle the Steiner Tree problem in physical design (chip design).
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <article class="paper" data-stop="iclr-2023">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <div class="two">
+              <img src="images/gfn_schedule_teaser_2.png" width="118%" alt="">
+            </div>
+            <img src="images/gfn_schedule_teaser.png" width="118%" alt="">
+          </div>
+        </div>
+        <div class="paper-text">
+          <a href="https://arxiv.org/abs/2302.05446/">
+            <span class="papertitle">Robust scheduling with GFlowNets</span>
+          </a>
+          <br>
+          <a href="https://davzha.netlify.app/">David W Zhang</a>,
+          <a href="https://corradorainone.wordpress.com//">Corrado Rainone</a>,
+          <strong>Markus Peschl</strong>,
+          <a href="https://profiles.imperial.ac.uk/r.bondesan/">Roberto Bondesan</a>,
+          <br>
+          ICLR 2023 <em>(International Conference on Learning Representations)</em>
+          <br>
+          <a href="https://openreview.net/forum?id=ZBUthI6wK9h">OpenReview</a>
+          /
+          <a href="https://arxiv.org/abs/2302.05446">arXiv</a>
+          <p style="margin-top:4px;">
+            We use GFlowNets to tackle the NP-hard problem of computation graph scheduling by combining a temparature conditioned policy with top-k sampling.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <article class="paper">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <img src="images/teaser_mimo.png" width="100%" alt="">
+          </div>
+        </div>
+        <div class="paper-text">
+          <a href="https://arxiv.org/abs/2209.00529">
+            <span class="papertitle">Learning Perturbations for Soft-Output Linear MIMO Demappers</span>
+          </a>
+          <br>
+          <a href="https://danielewworrall.github.io/">Daniel E. Worrall</a>,
+          <strong>Markus Peschl</strong>,
+          <a href="https://arashbehboodi.github.io/">Arash Behboodi</a>,
+          <a href="https://profiles.imperial.ac.uk/r.bondesan/">Roberto Bondesan</a>,
+          <br>
+          GLOBECOM 2022 <em>(IEEE Global Communications Conference)</em>
+          <br>
+          <a href="https://ieeexplore.ieee.org/abstract/document/10001724">IEEE</a>
+          /
+          <a href="https://arxiv.org/abs/2209.00529">arXiv</a>
+          <p style="margin-top:4px;">
+            We combine lattice reduction, Bayesian optimization and a stochastic sampler to arrive at a highly efficient, yet accurate linear MIMO demapper.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <article class="paper" data-stop="aamas-2022">
+      <div class="paper-inner">
+        <div class="paper-img">
+          <div class="one">
+            <img src="images/moral_teaser.png" width="118%" alt="">
+          </div>
+        </div>
+        <div class="paper-text">
+          <a href="https://arxiv.org/abs/2201.00012">
+            <span class="papertitle">MORAL: Aligning AI with Human Norms through Multi-Objective Reinforced Active Learning</span>
+          </a>
+          <br>
+          <strong>Markus Peschl</strong>,
+          <a href="https://www.tudelft.nl/aitech/our-team/arkady-zgonnikov">Arkady Zgonnikov</a>,
+          <a href="https://www.fransoliehoek.net/wp/">Frans A Oliehoek</a>,
+          <a href="https://lucianosiebert.wordpress.com/">Luciano C Siebert</a>,
+          <br>
+          AAMAS 2022 <em>(International Conference on Autonomous Agents and Multiagent Systems)</em>
+          <br>
+          <a href="https://arxiv.org/abs/2201.00012">arXiv</a>
+          <p style="margin-top:4px;">
+            AI alignment is challenging due to a multitude of different and possibly conflicting values present in human feedback. We propose to overcome this challenge with a multi-objective agent that actively learns user preferences.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <article class="paper paper-soon is-hidden" data-stop="neurips-2026">
+      <div class="paper-inner">
+        <div class="paper-soon-body">
+          <span class="papertitle">NeurIPS 2026</span><br>
+          Paper coming soon &mdash; see you in Sydney in December.
+        </div>
+      </div>
+    </article>
+
+          </div>
+        </td>
+      </tr>
+    </tbody></table>
   </body>
 </html>
