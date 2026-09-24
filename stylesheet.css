@@ -206,3 +206,116 @@ span.highlight {
     display: block;
   }
 }
+
+
+/* Conference journey scene (drawn by journey.js) */
+.journey {
+  padding: 16px 20px 0;
+}
+
+.journey svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.journey .j-mage {
+  shape-rendering: crispEdges;
+}
+
+.journey .j-name {
+  font-family: 'Press Start 2P', monospace;
+  fill: #1f2328;
+}
+
+.journey .j-year {
+  font-family: 'Press Start 2P', monospace;
+  fill: #8a929c;
+}
+
+.journey .j-cloud {
+  fill: #ffffff;
+  opacity: 0.9;
+}
+
+.journey .j-logo {
+  fill: none;
+  stroke: #8d86c2;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.7;
+  transition: opacity 0.4s, stroke 0.4s, transform 0.4s;
+}
+
+.journey .j-logo .j-fill {
+  fill: #8d86c2;
+  stroke: none;
+  transition: fill 0.4s;
+}
+
+.journey .j-logo.j-upcoming {
+  opacity: 0.35;
+}
+
+.journey .j-logo.j-active {
+  stroke: #5b4fa8;
+  opacity: 1;
+  transform: translateY(-1.5px);
+}
+
+.journey .j-logo.j-active .j-fill {
+  fill: #5b4fa8;
+}
+
+.journey .j-shimmer {
+  fill: #ffffff;
+  animation: j-shimmer 4s ease-in-out infinite;
+}
+
+.journey .j-pad {
+  fill: #7a6f9a;
+}
+
+.journey .j-next {
+  fill: #d9a441;
+  animation: j-blink 1.2s ease-in-out infinite;
+}
+
+.journey .j-glow {
+  fill: #7fe3ff;
+  opacity: 0.35;
+  animation: j-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes j-blink {
+  50% { opacity: 0.25; }
+}
+
+@keyframes j-pulse {
+  50% { opacity: 0.1; }
+}
+
+@keyframes j-shimmer {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.7; }
+}
+
+@media (max-width: 600px) {
+  .journey {
+    padding: 8px 16px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey .j-next,
+  .journey .j-glow,
+  .journey .j-shimmer {
+    animation: none;
+  }
+
+  .journey .j-logo {
+    transition: none;
+  }
+}
