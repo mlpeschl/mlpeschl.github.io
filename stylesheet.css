@@ -209,8 +209,12 @@ span.highlight {
 
 
 /* Conference journey scene (drawn by journey.js) */
+.journey-title {
+  padding: 20px 20px 12px;
+}
+
 .journey {
-  padding: 16px 20px 0;
+  padding: 0 20px;
 }
 
 .journey svg {
@@ -237,6 +241,49 @@ span.highlight {
 .journey .j-cloud {
   fill: #ffffff;
   opacity: 0.9;
+}
+
+.journey .j-gpu-body {
+  fill: url(#j-gpu-shroud);
+  stroke: #a3a9b3;
+  stroke-width: 0.12;
+}
+
+.journey .j-gpu-dark {
+  fill: #1c1d21;
+}
+
+.journey .j-gpu-stripe {
+  fill: #76b900;
+}
+
+.journey .j-gpu-bracket {
+  fill: #c3c8d0;
+}
+
+.journey .j-gpu-pcb {
+  fill: #1f5a32;
+}
+
+.journey .j-gpu-pcie {
+  fill: #d9b24c;
+}
+
+.journey .j-gpu-fan {
+  fill: #25272c;
+  stroke: #8d939d;
+  stroke-width: 0.14;
+}
+
+.journey .j-gpu-blade {
+  fill: none;
+  stroke: #7b818b;
+  stroke-width: 0.2;
+  stroke-linecap: round;
+}
+
+.journey .j-gpu-hub {
+  fill: #a9afb9;
 }
 
 .journey .j-logo {
@@ -315,12 +362,6 @@ span.highlight {
   fill: #ffffff;
 }
 
-.journey .j-glow {
-  fill: #7fe3ff;
-  opacity: 0.35;
-  animation: j-pulse 1.6s ease-in-out infinite;
-}
-
 @keyframes j-blink {
   50% { opacity: 0.45; }
 }
@@ -329,25 +370,24 @@ span.highlight {
   50% { opacity: 0.55; }
 }
 
-@keyframes j-pulse {
-  50% { opacity: 0.1; }
-}
-
 @keyframes j-shimmer {
   0%, 100% { opacity: 0; }
   50% { opacity: 0.7; }
 }
 
 @media (max-width: 600px) {
+  .journey-title {
+    padding: 16px 16px 8px;
+  }
+
   .journey {
-    padding: 8px 16px 0;
+    padding: 0 16px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .journey .j-pad.j-on,
   .journey .j-halo.j-on,
-  .journey .j-glow,
   .journey .j-shimmer {
     animation: none;
   }

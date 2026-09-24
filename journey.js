@@ -1,5 +1,6 @@
-// "Conference journey" strip: a pixel mage cycles along an Amsterdam canal past soft
-// landmarks, one per conference paper, slowing down until it stops where "now" is:
+// "Conference journey" strip: a pixel trainer cycles along an Amsterdam canal, chased by
+// a robot dog and a retro robot, past soft landmarks (one per conference paper), slowing down
+// until it stops where "now" is:
 // at a conference (within a week of its dates), part-way between two, or just past the
 // last one. Past/present/upcoming all follow from the dates, so nothing needs updating;
 // to add a conference, append it to STOPS with its dates. Logos are drawn in LOGOS.
@@ -61,37 +62,218 @@
     };
   }
 
-  // ---------- pixel mage ----------
-  const MAGE_PALETTE = {
-    H: '#3b2a63', h: '#6a52b8', B: '#d9a441', K: '#141414', Y: '#ffd84a',
-    R: '#2d3a80', r: '#1d2657', G: '#7a5230', S: '#8b5a2b', O: '#7fe3ff', F: '#1a1a1a',
+  // ---------- 8-bit trainer on a bike, chased by two robots ----------
+  // The green-cap trainer pedals away on a road bike while a Unitree Go2 style robot
+  // dog and a classic boxy 8-bit robot tag along behind. Each is a separate pixel sprite
+  // (26px tall) with a dark outline, so the robots can trail at their own pace. Frames 0-3
+  // are the pedal / trot / run cycle; frame 4 is standing still.
+  const RIDER_PALETTE = {
+    K: '#26262e', W: '#46b85a', w: '#2f8a42', G: '#2a7a3a', g: '#dff5da', N: '#6b4a2e',
+    S: '#f8d0a8', s: '#d49c74', E: '#1e1e26', B: '#3c3c46', O: '#f08a34', o: '#c8641c',
+    V: '#4caf50', v: '#2f7d36', P: '#4a4a58', p: '#34343f', Q: '#e04444',
+    F: '#e04848', f: '#f6f6f6', T: '#34343e', R: '#c8d0dc',
+    H: '#a9afb9', h: '#767c86', J: '#dde1e7', M: '#474b53', Z: '#e04444', z: '#ffe25a',
+    L: '#e6e8ec', l: '#aeb3bd', D: '#44474f', d: '#72767f', Y: '#5fd0ff', y: '#2f6f8f',
   };
+  const RIDER_W = 24, RIDER_H = 26, HUMAN_W = 14, GO2_W = 27;
+  const MAGE_CX = 12;       // the bike's center (what stops at a conference), in pixels
+  const HUMAN_CX = 7, GO2_CX = 14;
+  const MAGE_SCALE = 0.65;
 
-  const MAGE_BODY = [
-    '........H.......',
-    '.......HH.......',
-    '.......HhH......',
-    '......HHhH......',
-    '......HHhHH.....',
-    '.....HHHhHH..O..',
-    '.....BBBBBB.OOO.',
-    '..HHHHHHHHHH.O..',
-    '....KKKKKK...S..',
-    '....KKKYKY...S..',
-    '....KKKKKK...S..',
-    '...RRRRRRRR..S..',
-    '..RRRRRRRRRRGG..',
-    '..RrRRRRRRRR....',
-    '...RRRRRRRR.....',
-  ];
-  // Seated on a Dutch step-through bike, in sprite units; the staff doubles as a headlight.
-  const BIKE = {
-    rear: [3.2, 19.6], front: [13.3, 19.6], wheel: 2.6, crank: [7.6, 19.4], crankLen: 1.7,
-    hip: [7.2, 14.6], thigh: 3, shin: 3.3,
-  };
-  const RIDER_H = BIKE.rear[1] + BIKE.wheel;
-  const MAGE_CX = 8;        // visual center column of the rider
-  const MAGE_SCALE = 0.75;
+  const SPRITES = (() => {
+    const blank = (w) => Array.from({ length: RIDER_H }, () => Array(w).fill('.'));
+    const put = (g, x, y, c) => {
+      x = Math.round(x); y = Math.round(y);
+      if (x >= 0 && y >= 0 && x < g[0].length && y < g.length) g[y][x] = c;
+    };
+    const line = (g, [x0, y0], [x1, y1], c, thick) => {
+      const n = Math.ceil(Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) * 2) || 1;
+      for (let i = 0; i <= n; i++) {
+        const x = x0 + ((x1 - x0) * i) / n, y = y0 + ((y1 - y0) * i) / n;
+        put(g, x, y, c);
+        if (thick) put(g, x + 1, y, c);
+      }
+    };
+    const stamp = (g, rows, dx, dy) => rows.forEach((r, y) => [...r].forEach((c, x) => {
+      if (c !== '.') put(g, x + dx, y + dy, c);
+    }));
+    const outline = (g) => g.map((r, y) => r.map((c, x) => {
+      if (c !== '.') return c;
+      const near = [[0, 1], [0, -1], [1, 0], [-1, 0]].some(([dx, dy]) => (g[y + dy] || [])[x + dx] > '.');
+      return near ? 'K' : '.';
+    }));
+    const wheel = (g, [cx, cy], spin, r0 = 3.3, r1 = 4.5) => {
+      for (let y = 0; y < g.length; y++) {
+        for (let x = 0; x < g[0].length; x++) {
+          const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy), a = Math.atan2(dy, dx) - spin;
+          if (d >= r0 && d <= r1) g[y][x] = 'T';
+          else if (d < r0 * 0.4) g[y][x] = 'R';
+          else if (d < r0 && (Math.abs(d * Math.sin(a)) < 0.55 || Math.abs(d * Math.cos(a)) < 0.55)) g[y][x] = 'R';
+        }
+      }
+    };
+    // knee for a hip-to-pedal leg (two-bone IK, knee forward)
+    const knee = ([hx, hy], [px, py], l1, l2) => {
+      const dx = px - hx, dy = py - hy, d = Math.hypot(dx, dy);
+      const a = Math.min(l1, (l1 * l1 - l2 * l2 + d * d) / (2 * d));
+      const h = Math.sqrt(Math.max(0, l1 * l1 - a * a));
+      return [hx + (a * dx) / d + (h * dy) / d, hy + (a * dy) / d - (h * dx) / d];
+    };
+    const along = ([x, y], angle, len) => [x + len * Math.sin(angle), y + len * Math.cos(angle)];
+
+    // rider: grown-up proportions (small head, taller torso)
+    const HEAD = [
+      '..WWWW...',
+      '.WWgWWW..',
+      '.NwwwwwGG',
+      '.NNSSSS..',
+      '.NSSSSES.',
+      '..sSSSS..',
+      '...ss....',
+    ];
+    const TORSO = [
+      '..BBBO..',
+      '.VVBBBOO',
+      'VVvBBBBO',
+      'VvvBBBBB',
+      '.vBBBBBB',
+      '..BBBBB.',
+      '..PPPPP.',
+    ];
+    const BX = 0;
+    const rear = [BX + 5, 21], front = [BX + 19, 21], crank = [BX + 11, 21], seat = [BX + 9, 17];
+    const headTop = [BX + 17, 16], headLow = [BX + 16.5, 18], bar = [BX + 19.5, 16], drop = [BX + 19.5, 18];
+    const hip = [BX + 10, 17.2];
+
+    // classic 8-bit robot: boxy silver head with an antenna, a glowing eye and a mouth
+    // grille, a box body with a chest light, and stiff straight limbs that march without
+    // bending. Far-side limbs are a shade darker. Angles are measured from straight down.
+    const RUN = [
+      { legs: [0.35, -0.35], arms: [-0.45, 0.45] },
+      { legs: [0.15, -0.15], arms: [-0.2, 0.2] },
+      { legs: [-0.35, 0.35], arms: [0.45, -0.45] },
+      { legs: [-0.15, 0.15], arms: [0.2, -0.2] },
+    ];
+    const STAND = { legs: [0, 0], arms: [0.05, -0.05] };
+    const BOT_HEAD = [
+      '....Z..',
+      '....h..',
+      '.HHHHHH',
+      'JHHHzzH',
+      'HHHHzzH',
+      'HHHhhhH',
+      '.HHHHHH',
+    ];
+    const BOT_BODY = [
+      'HHHHHH',
+      'HhhhhH',
+      'HhZJhH',
+      'HhhhhH',
+      'HHHHHH',
+      '.hhhh.',
+    ];
+    function humanoid(g, pose) {
+      const hip = [6, 16.5], shoulder = [6, 10];
+      pose.legs.forEach((a, i) => {
+        const top = [hip[0] + (i ? 0.5 : -0.5), hip[1]], ft = along(top, a, 7.5), c = i ? 'H' : 'h';
+        line(g, top, ft, c, true);
+        line(g, [ft[0] - 0.5, ft[1] + 0.5], [ft[0] + 2, ft[1] + 0.5], 'M', true);
+      });
+      stamp(g, BOT_BODY, 3, 10);
+      pose.arms.forEach((a, i) => {
+        const hand = along(shoulder, a, 5.5), c = i ? 'H' : 'h';
+        line(g, [shoulder[0] + (i ? 2 : -2), shoulder[1]], [hand[0] + (i ? 2 : -2), hand[1]], c);
+        put(g, hand[0] + (i ? 2 : -2), hand[1] + 0.5, 'J');
+      });
+      put(g, 6, 9, 'h');
+      stamp(g, BOT_HEAD, 3, 2);
+    }
+
+    // quadruped (Go2 style): light shell, darker belly, hip motors, dark head with a camera
+    // light and LiDAR bump; legs bend backward at the knee and trot on small feet
+    const GO2 = [
+      '...LLLLLLLLLLLLLL......',
+      '..LLLLLLLLLLLLLLLLLDDD.',
+      '.LLLLLLLLLLLLLLLLLLDDDY',
+      '.lllllllllllllllllLDDD.',
+      '..lllDDDlllllllDDDllDD.',
+      '....DDD.......DDD..DD..',
+    ];
+    const GO2_HIPS = [[9, 16.5], [19, 16.5]];  // rear, front
+    const GROUND = 25;
+    // trot: diagonal pairs (near rear + far front, near front + far rear) step together;
+    // each foot slides back while planted, then lifts and swings forward
+    const STEP = [[2, 0], [0, 0], [-2, 0], [0, -1.5]];
+    const kneeBack = ([hx, hy], [fx, fy]) => {
+      const [kx, ky] = knee([-hx, hy], [-fx, fy], 4.8, 4.8);
+      return [-kx, ky];
+    };
+
+    const merge = (back, fore) => {
+      const out = outline(fore);
+      return back.map((r, y) => r.map((c, x) => (out[y][x] !== '.' ? out[y][x] : c)).join(''));
+    };
+
+    const human = [0, 1, 2, 3, 4].map((k) => {
+      const fore = blank(HUMAN_W);
+      humanoid(fore, k < 4 ? RUN[k] : STAND);
+      return merge(blank(HUMAN_W), fore);
+    });
+
+    const go2 = [0, 1, 2, 3, 4].map((k) => {
+      const moving = k < 4;
+      const leg = (g, hip, phase, thigh, shin) => {
+        const [dx, dy] = moving ? STEP[phase % 4] : [0, 0];
+        const foot = [hip[0] + dx, GROUND + dy], kn = kneeBack(hip, foot);
+        line(g, hip, kn, thigh, true);
+        line(g, kn, foot, shin);
+        line(g, [foot[0] - 0.5, foot[1]], [foot[0] + 0.5, foot[1]], 'D', true);
+      };
+      const fore = blank(GO2_W);
+      const far = ([x, y]) => [x + 1, y];
+      leg(fore, far(GO2_HIPS[0]), k + 2, 'd', 'd');   // far rear (pair B)
+      leg(fore, far(GO2_HIPS[1]), k, 'd', 'd');       // far front (pair A)
+      stamp(fore, GO2, 3, 11);
+      put(fore, 25, 13, k % 4 < 2 ? 'Y' : 'y');
+      leg(fore, GO2_HIPS[0], k, 'l', 'D');            // near rear (pair A)
+      leg(fore, GO2_HIPS[1], k + 2, 'l', 'D');        // near front (pair B)
+      return merge(blank(GO2_W), fore);
+    });
+
+    const bike = [0, 1, 2, 3, 4].map((k) => {
+      const moving = k < 4, spin = moving ? (k * Math.PI) / 8 : 0;
+      const theta = Math.PI / 4 + ((moving ? k : 0) * Math.PI) / 2;
+      const pedal = [crank[0] + 2.1 * Math.cos(theta), crank[1] + 2.1 * Math.sin(theta)];
+      const pedalFar = [2 * crank[0] - pedal[0], 2 * crank[1] - pedal[1]];
+
+      const back = blank(RIDER_W);
+      wheel(back, rear, spin);
+      wheel(back, front, spin);
+
+      // far leg, bike frame, rider, near leg
+      const fore = blank(RIDER_W);
+      const kneeFar = knee(hip, pedalFar, 3.2, 3.4);
+      line(fore, hip, kneeFar, 'p', true);
+      line(fore, kneeFar, pedalFar, 's', true);
+      line(fore, pedalFar, [pedalFar[0] + 1, pedalFar[1]], 'Q', true);
+      [[rear, crank], [rear, seat], [seat, crank], [seat, headTop], [crank, headLow], [headTop, headLow],
+        [headLow, front], [headTop, bar], [bar, drop]].forEach(([a, b]) => line(fore, a, b, 'F'));
+      put(fore, BX + 13, 19, 'f');
+      put(fore, BX + 14, 19, 'f');
+      stamp(fore, TORSO, BX + 6, 11);
+      stamp(fore, HEAD, BX + 8, 4);
+      line(fore, [BX + 12.5, 13], [BX + 18.5, 16], 'S', true);
+      put(fore, BX + 12, 12, 'O');
+      put(fore, BX + 13, 12, 'o');
+      const kneeNear = knee(hip, pedal, 3.2, 3.4);
+      line(fore, hip, kneeNear, 'P', true);
+      line(fore, kneeNear, pedal, 'S', true);
+      line(fore, pedal, [pedal[0] + 1, pedal[1]], 'Q', true);
+      return merge(back, fore);
+    });
+
+    return { bike, human, go2 };
+  })();
 
   // Render string-art rows as SVG rects, merging horizontal runs of the same color.
   function sprite(rows, palette, parent) {
@@ -210,6 +392,35 @@
     widths.forEach((w) => { house(parent, x, w, rand); x += w; });
   }
 
+  // a graphics card, about 10 x 3.6 units before scaling: metallic shroud with a silver
+  // trim and green accent, two fans with curved blades, a power connector on top, the green
+  // PCB edge with gold PCIe contacts underneath, and a silver bracket with vents and ports
+  function fanBlades(cx, cy) {
+    let d = '';
+    for (let i = 0; i < 7; i++) {
+      const a = (i * 2 * Math.PI) / 7, p = (r, t) => `${(cx + r * Math.cos(t)).toFixed(2)} ${(cy + r * Math.sin(t)).toFixed(2)}`;
+      d += `M${p(0.4, a)}Q${p(0.85, a + 0.35)} ${p(1.05, a + 0.9)}`;
+    }
+    return d;
+  }
+  function gpuCard(parent, scale) {
+    const g = el('g', { transform: `scale(${scale})` }, parent);
+    el('rect', { x: 0.9, y: 2.6, width: 8.7, height: 0.55, class: 'j-gpu-pcb' }, g);
+    el('rect', { x: 3.1, y: 3.1, width: 4.2, height: 0.5, class: 'j-gpu-pcie' }, g);
+    el('rect', { x: 7.5, y: -0.35, width: 1.3, height: 0.45, rx: 0.1, class: 'j-gpu-dark' }, g);
+    el('rect', { x: 0.8, width: 9, height: 2.8, rx: 0.45, class: 'j-gpu-body' }, g);
+    el('rect', { x: 1.3, y: 0.16, width: 8, height: 0.2, rx: 0.1, class: 'j-gpu-stripe' }, g);
+    el('rect', { y: -0.1, width: 0.8, height: 3.7, class: 'j-gpu-bracket' }, g);
+    [0.4, 1.1, 1.8].forEach((y) => el('rect', { x: 0.2, y, width: 0.4, height: 0.35, class: 'j-gpu-dark' }, g));
+    el('rect', { x: 0.25, y: 2.5, width: 0.3, height: 0.7, class: 'j-gpu-dark' }, g);
+    [3.25, 6.95].forEach((cx) => {
+      el('circle', { cx, cy: 1.4, r: 1.2, class: 'j-gpu-fan' }, g);
+      el('path', { d: fanBlades(cx, 1.4), class: 'j-gpu-blade' }, g);
+      el('circle', { cx, cy: 1.4, r: 0.36, class: 'j-gpu-hub' }, g);
+    });
+    return g;
+  }
+
   function cloud(parent, s) {
     const g = el('g', { class: 'j-cloud' }, parent);
     [[0, 0, 6, 2.4], [-3.2, 0.6, 3.6, 1.8], [3.6, 0.7, 4, 1.9], [0.6, -1.5, 3.6, 2.2]].forEach(([cx, cy, rx, ry]) =>
@@ -242,7 +453,7 @@
     } else {
       const next = STOPS.findIndex((st) => st.upcoming);
       if (next < 0) {
-        target = xs[xs.length - 1] + Math.min(10, W - xs[xs.length - 1] - 7);
+        target = xs[xs.length - 1] + Math.min(10, W - xs[xs.length - 1] - 10);
       } else if (next > 0) {
         const prev = STOPS[next - 1], f = (today - prev.to) / (STOPS[next].from - prev.to);
         target = xs[next - 1] + (xs[next] - xs[next - 1]) * (0.2 + 0.6 * Math.min(1, Math.max(0, f)));
@@ -272,6 +483,9 @@
     const halo = el('radialGradient', { id: 'j-halo' }, defs);
     el('stop', { offset: 0, 'stop-color': '#ffd98a', 'stop-opacity': 0.9 }, halo);
     el('stop', { offset: 1, 'stop-color': '#ffd98a', 'stop-opacity': 0 }, halo);
+    const shroud = el('linearGradient', { id: 'j-gpu-shroud', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#4a4e57' }, shroud);
+    el('stop', { offset: 1, 'stop-color': '#1d1f24' }, shroud);
     const cardClip = el('clipPath', { id: 'j-card' }, defs);
     el('rect', { width: W, height: CARD_H, rx: 4 }, cardClip);
     const waterClip = el('clipPath', { id: 'j-water-clip' }, defs);
@@ -338,11 +552,15 @@
         style: `animation-delay:${(-shimmerRand() * 4).toFixed(2)}s`,
       }, card);
     }
+    // a canal barge shipping GPUs: two rows of graphics cards on deck, a cabin at the back
     const boat = el('g', {}, card);
-    el('path', { d: 'M0 0H14L12.5 2.2H1.5Z', fill: '#4f6f60' }, boat);
-    el('rect', { x: 3, y: -2.2, width: 7, height: 2.2, rx: 0.5, fill: '#efe4d0' }, boat);
-    [4.2, 6.2, 8.2].forEach((x) => el('rect', { x, y: -1.6, width: 1, height: 0.9, fill: '#98bdd3' }, boat));
-    const boatY = QUAY + 8.5;
+    [[2, -3.5], [11.8, -3.5], [21.6, -3.5], [6.9, -7], [16.7, -7]].forEach(([x, y]) =>
+      gpuCard(el('g', { transform: `translate(${x} ${y})` }, boat), 0.95));
+    el('rect', { x: 32, y: -4.6, width: 7, height: 4.6, rx: 0.6, fill: '#efe4d0' }, boat);
+    [33.4, 36].forEach((x) => el('rect', { x, y: -3.6, width: 1.5, height: 1.3, fill: '#98bdd3' }, boat));
+    el('path', { d: 'M0 0H41L38 4.2H3Z', fill: '#34503f' }, boat);
+    el('rect', { x: 1, y: 0.5, width: 39, height: 0.35, fill: '#76b900' }, boat);
+    const boatY = CARD_H - 4.6;
 
     // stop markers on the bike path
     const pads = STOPS.map((stop, i) => el('rect', {
@@ -369,65 +587,33 @@
       }
     });
 
-    // the mage on its bike
-    const actor = el('g', {}, card);
-    const mage = el('g', {}, actor);
-    el('circle', { cx: 13.5, cy: 6.5, r: 3, class: 'j-glow' }, mage);
-    const legStyle = { fill: 'none', 'stroke-width': 1.3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
-    const farLeg = el('path', Object.assign({ stroke: '#1d2657' }, legStyle), mage);
-    const farBoot = el('circle', { r: 0.7, fill: '#1a1a1a' }, mage);
-    const frameStyle = { fill: 'none', stroke: '#2b2b2b', 'stroke-width': 0.6, 'stroke-linecap': 'round' };
-    const wheels = [BIKE.rear, BIKE.front].map(() => {
-      const w = el('g', {}, mage);
-      el('circle', Object.assign({ r: BIKE.wheel }, frameStyle), w);
-      el('path', Object.assign({ d: 'M-2.6 0H2.6M0 -2.6V2.6M-1.84 -1.84L1.84 1.84M-1.84 1.84L1.84 -1.84' },
-        frameStyle, { 'stroke-width': 0.2 }), w);
-      return w;
-    });
-    // step-through frame: stays, seat tube, curved down tube, fork, stem and saddle
-    el('path', Object.assign({
-      d: 'M3.2 19.6L7.6 19.4L6.2 15.4L3.2 19.6M7.6 19.4Q9.6 16.4 11.9 15.8L12.4 13.4L13.2 13M11.9 15.8L13.3 19.6',
-    }, frameStyle), mage);
-    el('path', Object.assign({ d: 'M5.2 15.3H7.2' }, frameStyle, { 'stroke-width': 0.9 }), mage);
-    const crank = el('path', Object.assign({}, frameStyle, { 'stroke-width': 0.4 }), mage);
-    sprite(MAGE_BODY, MAGE_PALETTE, mage);
-    const nearLeg = el('path', Object.assign({ stroke: '#2d3a80' }, legStyle), mage);
-    const nearBoot = el('circle', { r: 0.7, fill: '#1a1a1a' }, mage);
-
-    // hip -> knee -> pedal (two-bone IK, knee pointing forward)
-    function legPath([hx, hy], [px, py]) {
-      const dx = px - hx, dy = py - hy, d = Math.hypot(dx, dy);
-      const a = Math.min(BIKE.thigh, (BIKE.thigh ** 2 - BIKE.shin ** 2 + d * d) / (2 * d));
-      const h = Math.sqrt(Math.max(0, BIKE.thigh ** 2 - a * a));
-      const kx = hx + (a * dx) / d + (h * dy) / d, ky = hy + (a * dy) / d - (h * dx) / d;
-      return `M${hx} ${hy}L${kx.toFixed(2)} ${ky.toFixed(2)}L${px.toFixed(2)} ${py.toFixed(2)}`;
+    // A mover is one animated sprite: it shows the cycle frame for the distance travelled
+    // (one step per `stride`), or the standing frame when it hasn't moved.
+    function mover(frameRows, cx, stride) {
+      const g = el('g', {}, card);
+      const frames = frameRows.map((rows) => sprite(rows, RIDER_PALETTE, g));
+      let last = null;
+      return (x) => {
+        const moving = last !== null && Math.abs(x - last) > 0.01;
+        const k = moving ? ((Math.floor(x / stride) % 4) + 4) % 4 : 4;
+        frames.forEach((f, i) => { f.style.display = i === k ? '' : 'none'; });
+        const tx = (x - cx * MAGE_SCALE).toFixed(2), ty = (FEET - (RIDER_H - 0.5) * MAGE_SCALE).toFixed(2);
+        g.setAttribute('transform', `translate(${tx} ${ty}) scale(${MAGE_SCALE})`);
+        last = x;
+      };
     }
-
-    // pedal and roll the wheels for a given distance travelled
-    function pose(dist) {
-      const theta = dist / 1.1;
-      const [cx, cy] = BIKE.crank;
-      const near = [cx + BIKE.crankLen * Math.cos(theta), cy + BIKE.crankLen * Math.sin(theta)];
-      const far = [2 * cx - near[0], 2 * cy - near[1]];
-      crank.setAttribute('d', `M${far[0].toFixed(2)} ${far[1].toFixed(2)}L${near[0].toFixed(2)} ${near[1].toFixed(2)}`);
-      nearLeg.setAttribute('d', legPath(BIKE.hip, near));
-      farLeg.setAttribute('d', legPath(BIKE.hip, far));
-      nearBoot.setAttribute('cx', near[0].toFixed(2));
-      nearBoot.setAttribute('cy', near[1].toFixed(2));
-      farBoot.setAttribute('cx', far[0].toFixed(2));
-      farBoot.setAttribute('cy', far[1].toFixed(2));
-      const spin = ((dist / BIKE.wheel) * 180) / Math.PI;
-      [BIKE.rear, BIKE.front].forEach(([hx, hy], i) =>
-        wheels[i].setAttribute('transform', `translate(${hx} ${hy}) rotate(${spin.toFixed(1)})`));
-    }
+    // robots tag along behind, a little slower: the robot dog close, the retro robot further back
+    const BOTS = [
+      { gap: 34, lag: 1100, place: mover(SPRITES.human, HUMAN_CX, 2.6) },
+      { gap: 18, lag: 450, place: mover(SPRITES.go2, GO2_CX, 1.6) },
+    ];
+    const placeBike = mover(SPRITES.bike, MAGE_CX, 1.4);
 
     root.appendChild(svg);
 
     function place(x) {
-      const tx = (x - MAGE_CX * MAGE_SCALE).toFixed(2);
-      const ty = (FEET - RIDER_H * MAGE_SCALE).toFixed(2);
-      actor.setAttribute('transform', `translate(${tx} ${ty}) scale(${MAGE_SCALE})`);
-      pose(x - xs[0]);
+      placeBike(x);
+      BOTS.forEach((b) => b.place(x - b.gap));
     }
 
     function scenery(now) {
@@ -435,7 +621,7 @@
         const cx = ((c.x + (now / 1000) * c.speed) % (W + 30)) - 15;
         c.g.setAttribute('transform', `translate(${cx.toFixed(2)} ${c.y})`);
       });
-      const bx = ((W * 0.3 + (now / 1000) * 2.2) % (W + 30)) - 20;
+      const bx = ((W * 0.3 + (now / 1000) * 1.6) % (W + 50)) - 45;
       boat.setAttribute('transform', `translate(${bx.toFixed(2)} ${boatY})`);
     }
 
@@ -455,17 +641,20 @@
     // one ride in from off-screen left to today's spot, already moving and slowing
     // down all the way
     const DELAY = 300, RIDE = 10000;
-    const A = -12, B = target;
+    const A = -((RIDER_W - MAGE_CX) * MAGE_SCALE + 2), B = target;
     const ease = (p) => 1 - Math.pow(1 - p, 2.6);
+    // rAF timestamps can be slightly earlier than t0, so clamp to avoid a negative time
+    const progress = (now, lag) => Math.min(1, Math.max(0, now - t0 - DELAY - lag) / RIDE);
     place(A);
     const t0 = performance.now();
 
     function tick(now) {
-      // rAF timestamps can be slightly earlier than t0, so clamp to avoid a negative time
-      const p = Math.min(1, Math.max(0, now - t0 - DELAY) / RIDE);
+      const p = progress(now, 0);
       const x = A + (B - A) * ease(p);
       const near = xs.findIndex((sx) => Math.abs(sx - x) < 4);
-      place(x);
+      placeBike(x);
+      // each robot follows the bike's path a little later, so it trails and then catches up
+      BOTS.forEach((b) => b.place(A + (B - A) * ease(progress(now, b.lag)) - b.gap));
       highlight(p >= 1 ? present : near, p >= 1);
       scenery(now);
       frameId = requestAnimationFrame(tick);
