@@ -66,22 +66,808 @@
   }
 
   // ---------- 8-bit trainer on a bike, chased by two robots ----------
-  // The green-cap trainer pedals away on a road bike while a Unitree Go2 style robot
-  // dog and a classic boxy 8-bit robot tag along behind. Each is a separate pixel sprite
-  // (26px tall) with a dark outline, so the robots can trail at their own pace. Frames 0-3
-  // are the pedal / trot / run cycle; frame 4 is standing still.
+  // The green-cap trainer coasts away on an e-bike (24x26 pixel sprite, frames 0-3 roll the
+  // wheels,
+  // frame 4 standing) while a quadruped robot dog and a humanoid robot tag along
+  // behind. Each is a pixel sprite in the biker's outlined style with a 4-frame walk cycle
+  // plus a standing frame.
   const RIDER_PALETTE = {
     K: '#26262e', W: '#46b85a', w: '#2f8a42', G: '#2a7a3a', g: '#dff5da', N: '#6b4a2e',
     S: '#f8d0a8', s: '#d49c74', E: '#1e1e26', B: '#3c3c46', O: '#f08a34', o: '#c8641c',
     V: '#4caf50', v: '#2f7d36', P: '#4a4a58', p: '#34343f', Q: '#e04444',
-    F: '#e04848', f: '#f6f6f6', T: '#34343e', R: '#c8d0dc',
-    H: '#a9afb9', h: '#767c86', J: '#dde1e7', M: '#474b53', Z: '#e04444', z: '#ffe25a',
-    L: '#e6e8ec', l: '#aeb3bd', D: '#44474f', d: '#72767f', Y: '#5fd0ff', y: '#2f6f8f',
+    F: '#3b404b', f: '#e04848', T: '#34343e', R: '#c8d0dc',
+    A: '#1f2228', L: '#5fe0ff', Y: '#fff3b0', Z: '#ff3b3b', M: '#2a2d34',
   };
-  const RIDER_W = 24, RIDER_H = 26, HUMAN_W = 14, GO2_W = 27;
+  const RIDER_W = 24, RIDER_H = 26;
   const MAGE_CX = 12;       // the bike's center (what stops at a conference), in pixels
-  const HUMAN_CX = 7, GO2_CX = 14;
   const MAGE_SCALE = 0.65;
+
+  // Robot dog, facing right (58x36): slim silver body, boxy head, long legs with backward knees. Frames 0-3 are a trot (feet plant, slide back, lift and swing); frame 4 is standing.
+  const DOG_SPRITE = {
+    palette: {
+      A: '#1b1d22', B: '#26262e', C: '#3a3f4a', D: '#737c8c', E: '#7fe3ff', F: '#9ea6b4',
+      G: '#c9cfd8', H: '#eef1f5',
+    },
+    frames: [
+      [ // step 0
+        '...............................................BBBBBBBB...',
+        '..............................................BHHHHHHHHB..',
+        '...........BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB.BGGGGGGGGGB.',
+        '..........BGGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHBBGGGGGGGAAAB',
+        '.........BHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHCCGGGGGGGAAAB',
+        '........BGHHHHGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGCCGGGGGGGAEAB',
+        '........BGHHHHGGGGGGGGFFFFFFFFFFFFFFFFFGGGGGGCCGGGGGGGAAAB',
+        '........BGGGCFCGGGGGGGGGGDDGDDDDDGGGGGGGGCGGGCCGGGGGGGAAAB',
+        '........BGGCFGGCGGGGGGGGGGGGGGGGGGGGGGGCFFFCGCCFFFFFFFFFGB',
+        '.........BGFFGGFFFFFFFFFFFFFFFFFFFFFFFFFFGGCFCCFFFFFFFFBB.',
+        '..........BFGGGCFFFFFFFFFFFFFFFFFFFFFFFFGGGCFFBBBCCCCBB...',
+        '.........BFFGGFFDDDDDDDDDDDDDDDDDDDDDFFGGGFCFDB.BCCCCB....',
+        '.........BFGGGFDBBBBBBBBBBBBBBBBBBBBFFGGGFFFFB...BBBB.....',
+        '........BFFGGFFB...................BFGGGFDFFDB............',
+        '........BFGGGFDB..................BFGGGFDDFFB.............',
+        '.......BFFGGFDB..................BFGGGFBDFFFB.............',
+        '.......BFGGGDB..................BFGGGFBDDFFDB.............',
+        '......BFFGGFB..................BFGGGFBBDFFFB..............',
+        '......BFGGGDB.................BFGGGFB.BDFFDB..............',
+        '.....BFFGGFB.................BFFGGGB.BDDFFB...............',
+        '....BDFGGGB.................BFCCGGFB.BDFFFB...............',
+        '....BFFGGFB.................BCHCCFB.BDDFFDB...............',
+        '....BCCCGB..................BFCCFDB.BDFFFB................',
+        '....BCHCDDB..................BBDDFDBBCCCDB................',
+        '....BCCCFFDB...................BDDFBDCCCCB................',
+        '.....BBDDFFDB...................BDDFBCCCDDBB..............',
+        '.......BDDFFDB...................BDDFBBCCDDCB.............',
+        '........BBDDFFB...................BDDFBBBCCDDBB...........',
+        '..........BDDFFBB.................BDDDFB.BCCCDDBB.........',
+        '...........BDDDFFB.................BDDDFB.BCCCDDDB........',
+        '............BDDDFFBB................BDDFFB.BBCCCDDBB......',
+        '.............BCDDDFFB................BDDFFB..BCCCCDDB.....',
+        '..............BCDAAAAB................BDAAAB..BBCCAAAB....',
+        '...............BAAAAAB.................BAAAB....BCAAAB....',
+        '................BCDDB...................BDB......BBCB.....',
+        '.................BBB.....................B.........B......',
+      ],
+      [ // step 1
+        '...............................................BBBBBBBB...',
+        '..............................................BHHHHHHHHB..',
+        '...........BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB.BGGGGGGGGGB.',
+        '..........BGGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHBBGGGGGGGAAAB',
+        '.........BHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHCCGGGGGGGAAAB',
+        '........BGHHHHGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGCCGGGGGGGAEAB',
+        '........BGHHHHGGGGGGGGFFFFFFFFFFFFFFFFFGGGGGGCCGGGGGGGAAAB',
+        '........BGGGCFCGGGGGGGGGGDDGDDDDDGGGGGGGGCGGGCCGGGGGGGAAAB',
+        '........BGGCFGGCGGGGGGGGGGGGGGGGGGGGGGGCFFFCGCCFFFFFFFFFGB',
+        '.........BGFFGGFFFFFFFFFFFFFFFFFFFFFFFFFFGGCFCCFFFFFFFFBB.',
+        '..........BFGGGCFFFFFFFFFFFFFFFFFFFFFFFFGGGCFFBBBCCCCBB...',
+        '.........BFGGGFFDDDDDDDDDDDDDDDDDDDDDDFGGGFCFB..BCCCCB....',
+        '........BFFGGFFFBBBBBBBBBBBBBBBBBBBBBFGGGFFFDB...BBBB.....',
+        '........BFGGGFFDB..................BFGGGFFFFB.............',
+        '.......BFGGGFFDB..................BFFGGFDFFDB.............',
+        '......BFFGGFFFB..................BFFGGGDFFFB..............',
+        '......BFGGGFFDB.................BFFGGGFDFFDB..............',
+        '.....BFFGGFFDB.................BFFGGGFDFFFB...............',
+        '....BFFGGGFDB..................BFGGGFDDFFDB...............',
+        '....BFGGGFFB..................BFGGGFBDFFFB................',
+        '...BFFGGFFDB.................BCCGGFBDDFFDB................',
+        '...BCCGGCDB.................BFCHCFBBDFFFB.................',
+        '..BFHHCFCCB..................BCCCFDDCCFDB.................',
+        '..BFCCCFCDDBB................BFFDDFFFCCB..................',
+        '...BBDDFFCDDDBB...............BBBDDFFFDCB.................',
+        '.....BDDFFCCDDDBB................BDDDFFDDBB...............',
+        '......BBDDFCCCDDDB................BBDDDFFDDB..............',
+        '........BDDFFCCCDDBB................BDDDFFFDBB............',
+        '.........BDDFFCCCCDDBB...............BBDDDFFDDB...........',
+        '..........BDDFFBCCCAAAB................BDDDAAADBB.........',
+        '...........BDDDFBCCAAAB.................BBDAAADDDB........',
+        '............BDDDFFBCCCB...................BDDDCCDDB.......',
+        '.............BDAAAABBB.....................BBBCCAAAB......',
+        '..............BAAAAB..........................BCAAAB......',
+        '...............BDDB............................BBCB.......',
+        '................BB...............................B........',
+      ],
+      [ // step 2
+        '...............................................BBBBBBBB...',
+        '..............................................BHHHHHHHHB..',
+        '...........BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB.BGGGGGGGGGB.',
+        '..........BGGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHBBGGGGGGGAAAB',
+        '.........BHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHCCGGGGGGGAAAB',
+        '........BGHHHHGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGCCGGGGGGGAEAB',
+        '........BGHHHHGGGGGGGGFFFFFFFFFFFFFFFFFGGGGGGCCGGGGGGGAAAB',
+        '........BGGGCFCGGGGGGGGGGDDGDDDDDGGGGGGGGCGGGCCGGGGGGGAAAB',
+        '........BGGCFGGCGGGGGGGGGGGGGGGGGGGGGGGCFFFCGCCFFFFFFFFFGB',
+        '.........BGFGGGFFFFFFFFFFFFFFFFFFFFFFFFCFGGCFCCFFFFFFFFBB.',
+        '.........BFGGGFCFFFFFFFFFFFFFFFFFFFFFFFFFGGCFFBBBCCCCBB...',
+        '........BFFGGGCFFDDDDDDDDDDDDDDDDDDDDDDFGGFCFB..BCCCCB....',
+        '.......BFFGGGDFFFBBBBBBBBBBBBBBBBBBBBBFFGGFFDB...BBBB.....',
+        '......BFFGGGFDFFDB...................BFGGFFDB.............',
+        '.....BFFGGGFDFFFB...................BFFGGFDB..............',
+        '....BFFGGGFBDFFDB...................BFGGFDB...............',
+        '...BFFGGGFBDDFFDB..................BFFGGFB................',
+        '...BFGGGFBBDFFFB..................BDFGGGDB................',
+        '..BFGGGFB.BDFFDB..................BFFGGFB.................',
+        '.BCCGGFB.BDDFFB..................BDFGGGB..................',
+        'BFHCCFB..BDFFFB.................BDFFGGFB..................',
+        'BFCCCB..BDDFFDB................BDFFGGGB...................',
+        '.BFDFFB.BDCFFB.................BDFCGGFB...................',
+        '..BDDFFBBCFCDB..................BCHCGCB...................',
+        '...BDDFDBCCCDBB.................BCCCFDB...................',
+        '....BDDFBDCCDDCB................BFCDFFFBB.................',
+        '.....BDDFBBBCCDDBB...............BBBDDFFDB................',
+        '......BDFFB.BCCDDDB.................BDDDFFB...............',
+        '......BDDFFB.BCCCDDBB................BBDDFFBB.............',
+        '.......BDDFFB.BBCCCDDBB................BDDDFFBB...........',
+        '........BDDFFB..BCCCDDDB................BDDDFFFB..........',
+        '.........BDDFFB..BBCCCDDB................BCDDDFFB.........',
+        '..........BAAAAB...BCCAAAB................BCDDAAAB........',
+        '..........BAAAAB....BCAAAB.................BADAAAB........',
+        '...........BDDB......BBCB...................BCBDB.........',
+        '............BB.........B.....................B.B..........',
+      ],
+      [ // step 3
+        '...............................................BBBBBBBB...',
+        '..............................................BHHHHHHHHB..',
+        '...........BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB.BGGGGGGGGGB.',
+        '..........BGGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHBBGGGGGGGAAAB',
+        '.........BHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHCCGGGGGGGAAAB',
+        '........BGHHHHGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGCCGGGGGGGAEAB',
+        '........BGHHHHGGGGGGGGFFFFFFFFFFFFFFFFFGGGGGGCCGGGGGGGAAAB',
+        '........BGGGCFCGGGGGGGGGGDDGDDDDDGGGGGGGGCGGGCCGGGGGGGAAAB',
+        '........BGGCFGGCGGGGGGGGGGGGGGGGGGGGGGGCFFFCGCCFFFFFFFFFGB',
+        '.........BGFGGGFFFFFFFFFFFFFFFFFFFFFFFFFFGGCFCCFFFFFFFFBB.',
+        '.........BFFGGFCFFFFFFFFFFFFFFFFFFFFFFFFGGGCFFBBBCCCCBB...',
+        '........BFFGGGCFFDDDDDDDDDDDDDDDDDDDDDFFGGFCFB..BCCCCB....',
+        '.......BFFGGGFFFDBBBBBBBBBBBBBBBBBBBBBFGGGFFDB...BBBB.....',
+        '......BFFGGGFFFFB...................BFGGGFFDB.............',
+        '......BFGGGFDFFDB..................BFFGGFFDB..............',
+        '.....BFGGGFDFFFB...................BFGGGFFB...............',
+        '....BFGGGFDDFFDB..................BFFGGFFDB...............',
+        '...BFGGGFBDFFFB..................BFFGGGFDB................',
+        '..BFFGGFBDDFFDB..................BFGGGFFB.................',
+        '.BFFGGGBBDFFFB..................BFFGGFFDB.................',
+        'BFCCCGFBDDFFDB..................BFGGGFDB..................',
+        'BFCCCDBBDFFFB..................BFGGGFDB...................',
+        '.BCCDFFDCCFDB.................BFCCCFCBB...................',
+        '..BBDDFFFCCBB.................BFCCCDDDCB..................',
+        '....BDDDFFDDCB.................BCCDFFCDDBB................',
+        '.....BBDDFFDDDB.................BBDDFFCCDDBB..............',
+        '.......BDDDFFDDB..................BDDFFCCCDDBB............',
+        '........BDDDFFDDBB.................BDDDFFCCCDDBB..........',
+        '.........BBDDDFFDDB.................BBDDFFCCCCDDBB........',
+        '...........BDDAAADDBB.................BDDFFBCCCAAAB.......',
+        '............BDAAAACDDB.................BDDDFFCCAAAB.......',
+        '.............BBDDCCCDDB.................BDDDFFBCCCB.......',
+        '...............BBBCCAAAB.................BDDAAABBB........',
+        '..................BCAAAB..................BBAAAB..........',
+        '...................BBCB.....................BDB...........',
+        '.....................B.......................B............',
+      ],
+      [ // standing
+        '...............................................BBBBBBBB...',
+        '..............................................BHHHHHHHHB..',
+        '...........BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB.BGGGGGGGGGB.',
+        '..........BGGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHBBGGGGGGGAAAB',
+        '.........BHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHCCGGGGGGGAAAB',
+        '........BGHHHHGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGCCGGGGGGGAEAB',
+        '........BGHHHHGGGGGGGGFFFFFFFFFFFFFFFFFGGGGGGCCGGGGGGGAAAB',
+        '........BGGGCFCGGGGGGGGGGDDGDDDDDGGGGGGGGCGGGCCGGGGGGGAAAB',
+        '........BGGCFGGCGGGGGGGGGGGGGGGGGGGGGGGCFFFCGCCFFFFFFFFFGB',
+        '.........BGFFGGFFFFFFFFFFFFFFFFFFFFFFFFFFGGCFCCFFFFFFFFBB.',
+        '.........BFFGGGCFFFFFFFFFFFFFFFFFFFFFFFFGGGCFFBBBCCCCBB...',
+        '.........BFGGGFFFDDDDDDDDDDDDDDDDDDDDDFFGGFCFB..BCCCCB....',
+        '........BFFGGFFFDBBBBBBBBBBBBBBBBBBBBFFGGGFFDB...BBBB.....',
+        '.......BFFGGFFFDB...................BFGGGFFFB.............',
+        '.......BFGGGFFFB...................BFGGGFFFDB.............',
+        '......BFGGGFFFDB..................BFFGGFFFDB..............',
+        '.....BFFGGFFFFB...................BFGGGFFFB...............',
+        '....BFFGGGDFFDB..................BFGGGFFFDB...............',
+        '....BFGGGFFFFB..................BFFGGFFFFB................',
+        '...BFFGGFDFFDB.................BFFGGGDFFDB................',
+        '..BFFGGGDFFDB..................BFGGGFFFDB.................',
+        '..BCHCGFCFFDB.................BFCCGFFFFDB.................',
+        '..BCHCDCFCDB..................BCHCFCCFDB..................',
+        '..BFCCFDCCCB..................BCCCFFCCBB..................',
+        '...BBDDFFCDDB..................BFDFFDDDCB.................',
+        '.....BDDFFCDDB..................BBDDFDCDDB................',
+        '......BDDFFCDDBB..................BDDFFCDDB...............',
+        '.......BDDFFCCDDB..................BDDFFCDDBB.............',
+        '........BDDFFCCDDB..................BDDFFCCDDB............',
+        '.........BDDDFCCDDBB.................BDDDFFCDDBB..........',
+        '..........BDDDFCCCDDB.................BDDDFFCCDDB.........',
+        '...........BDDDFFCCDDB.................BDDDFFCCDDB........',
+        '............BDAAAACAAAB.................BDDAAACAAAB.......',
+        '.............BAAAABAAAB..................BBAAACAAAB.......',
+        '..............BDDB.BCB.....................BDBBBCB........',
+        '...............BB...B.......................B...B.........',
+      ],
+    ],
+  };
+
+  // Humanoid robot, facing right (22x62): blue oval head, white chest plate, slim grey limbs. Frames 0-7 are a walk cycle (feet plant and roll back, then lift and swing; arms counter-swing); frame 8 is standing.
+  const HUMANOID_SPRITE = {
+    palette: {
+      A: '#16181c', B: '#1b2b66', C: '#26262e', D: '#2f7de0', E: '#34469a', F: '#353a44',
+      G: '#4a505c', H: '#6fbfff', I: '#7c8494', J: '#aab1bd', K: '#d3d8e0', L: '#dff3ff',
+      M: '#f4f6f9',
+    },
+    frames: [
+      [ // step 0
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFMMMMKKKKC.....',
+        '.....CFFMMMKMMMMC.....',
+        '......CFMMKKMMMMC.....',
+        '......CMMMKKMMMMC.....',
+        '......CMMMKKMMMC......',
+        '.....CMMMFKKMMMC......',
+        '.....CMMMFKKMMMC......',
+        '.....CFFFFKKMMMC......',
+        '.....CFFFFFFFFFCC.....',
+        '.....CJJCFFFFFCIIC....',
+        '.....CJJGGGGGGGCIIC...',
+        '.....CJJCFFFFFCCIIIC..',
+        '.....CJJJJJKKKKCCIIIC.',
+        '.....CJJJJJKKKKC.CIAAC',
+        '.....CJJIIJJJJJC.CAAAC',
+        '.....CAAIMIJJJC..CAAAC',
+        '....CAAAIMMJJC....CCC.',
+        '....CAAAIMMIC.........',
+        '.....CCCIIMMC.........',
+        '......CJCIMMIC........',
+        '......CJCIIMMC........',
+        '......CJICIMMC........',
+        '......CJICIIMMC.......',
+        '......CJIICIMMC.......',
+        '......CJIICIIMMC......',
+        '......CJIICIIMMC......',
+        '......CJIICCIIMMC.....',
+        '......CJIICCIFFFC.....',
+        '......CFFFC.CFFFC.....',
+        '......CFFFC.CFFKC.....',
+        '.....CIFFJC.CJJKC.....',
+        '.....CIIJC..CJJKC.....',
+        '.....CIJC...CJJKC.....',
+        '....CIJJC...CJJKC.....',
+        '....CIJIC...CJJKC.....',
+        '...CIJJC....CJJKC.....',
+        '...CIJIC....CJJKC.....',
+        '..CIJJC.....CJJKC.....',
+        '..CIJIC......CJKC.....',
+        '..CJJC.......CJKC.....',
+        '.CIJIC.......CJKCC....',
+        'CAAAAAC.....CAAAAAC...',
+        'CAAAAAC.....CAAAAAC...',
+        '.CCCCC.......CCCCC....',
+      ],
+      [ // step 1
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMKKKKC.....',
+        '.....CFFMMMKMMMMC.....',
+        '......CFMMMKMMMMC.....',
+        '......CFMMMKMMMMC.....',
+        '......CFMMKKMMMC......',
+        '......CMMMKKMMMC......',
+        '......CMMMKKMMMC......',
+        '......CFFFKKMMMC......',
+        '......CFFFFFFFFC......',
+        '......CJJFFFFFCC......',
+        '......CJJGGGGGGCC.....',
+        '......CJJFFFFFCIIC....',
+        '......CJJJJKKKKCIIC...',
+        '......CJJJJKKKKCIIC...',
+        '......CJJJJJJJJCIAAC..',
+        '......CJAJIJJJCCAAAC..',
+        '......CAAAMJJC..CAAC..',
+        '......CAAAMIC....CC...',
+        '.......CAIMMC.........',
+        '........CIMMC.........',
+        '........CIIMMC........',
+        '........CCIMMC........',
+        '........CCIIMMC.......',
+        '.........CIIMMC.......',
+        '.........CCIMMC.......',
+        '.........CCIIMMC......',
+        '..........CIIMMC......',
+        '..........CCIFFIC.....',
+        '..........CCFFFFC.....',
+        '..........CICFFC......',
+        '.........CICJJKC......',
+        '........CIICJJKC......',
+        '........CIJCJKKC......',
+        '.......CIJICJKJC......',
+        '......CIJICCJKC.......',
+        '.....CIJIICCJKC.......',
+        '....CIJIIC.CJKC.......',
+        '....CJIIC.CJJKC.......',
+        '...CIIIC..CJKJC.......',
+        '..CAAAAAC.CJKJC.......',
+        '..CAAAAAC.CJKJC.......',
+        '...CCCCC.CAAAAAC......',
+        '.........CAAAAAC......',
+        '..........CCCCC.......',
+      ],
+      [ // step 2
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMKKKKC.....',
+        '.....CFFFMMMMMMMC.....',
+        '......CFFMMMMMMMC.....',
+        '......CFFMMMMMMMC.....',
+        '......CFFMMMMMMC......',
+        '......CFFMMMMMMC......',
+        '......CFFMMMMMMC......',
+        '.......CFMFMMMMC......',
+        '.......CFFFFFFFC......',
+        '........CFFJFFC.......',
+        '.......CGGJJGGGC......',
+        '........CFJJJFC.......',
+        '.......CJJJJJKKC......',
+        '.......CJJJJJKKC......',
+        '.......CIIJJJJJC......',
+        '......CIIMIJJAC.......',
+        '.......CIMMJAAAC......',
+        '.......CIMMCAAAC......',
+        '.......CIMMICAC.......',
+        '.......CIIMMCCC.......',
+        '........CIMMCIC.......',
+        '........CIMMICIC......',
+        '........CIIMMCIIC.....',
+        '.........CIMMCIIIC....',
+        '.........CIMMCJIIC....',
+        '.........CIIMMCJFIC...',
+        '.........CIIMMCFFFC...',
+        '..........CIFFCFFFC...',
+        '..........CFFFICFJC...',
+        '..........CFFFCJJC....',
+        '..........CJJKCJC.....',
+        '..........CJKCJC......',
+        '.........CJJKCIC......',
+        '.........CJKKCC.......',
+        '.........CJKJC........',
+        '........CCJKCC........',
+        '.......CCJKKC.........',
+        '......CACJKJC.........',
+        '......CACJKCC.........',
+        '......CCJKJCC.........',
+        '.......CJKJC..........',
+        '......CAAAAAC.........',
+        '......CAAAAAC.........',
+        '.......CCCCC..........',
+      ],
+      [ // step 3
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMKKKKC.....',
+        '.....CFFFFMMMMMMC.....',
+        '......CFFFMMMMMMC.....',
+        '......CFFFMMMMMMC.....',
+        '......CFFFKMMMMC......',
+        '......CFFFKMMMMC......',
+        '......CFFFKMMMMC......',
+        '......CCFFKKFFMC......',
+        '......CCFFFFFFJC......',
+        '......CICFFFFJJC......',
+        '......CCGGGGGJJJC.....',
+        '......CICFFFFFJJJC....',
+        '......CCJJJKKKKJJJC...',
+        '......CCJJJKKKKCJJC...',
+        '......CCIIJJJJJCJAAC..',
+        '......CIIMIJJJCCAAAC..',
+        '......CIIMMJJC..CAAC..',
+        '......CCIMMCCC...CC...',
+        '.......CIMMCIC........',
+        '.......CIMMCIIC.......',
+        '.......CIMMCJIIC......',
+        '.......CIIMICJIIC.....',
+        '.......CIIMMCJIIIC....',
+        '.......CIIMMCJJIIIC...',
+        '........CIMMCCJJIIIC..',
+        '........CIMMC.CJFFFC..',
+        '........CIMMC.CJFFFC..',
+        '........CIIMIC.CFFFC..',
+        '........CIFFICCIIJC...',
+        '........CFFFFCCIIJC...',
+        '........CJFFC.CIJIC...',
+        '........CJKKCCIIJC....',
+        '.......CJJKC.CIJJC....',
+        '.......CJKKC.CIJIC....',
+        '.......CJKC.CIJJC.....',
+        '......CJKKC.CIJIC.....',
+        '......CJKJC.CIJIC.....',
+        '.....CJKKC..CJIC......',
+        '.....CJKJC.CIIIC......',
+        '.....CKKC.CAAAAAC.....',
+        '....CJKJC.CAAAAAAC....',
+        '...CAAAAAC.CCCCCC.....',
+        '...CAAAAAC............',
+        '....CCCCC.............',
+      ],
+      [ // step 4
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMMKKKC.....',
+        '.....CFFFFMMMMMMC.....',
+        '......CFFFKMMMMMC.....',
+        '......CFFFKMMMMMC.....',
+        '......CFFFKMMMMC......',
+        '.....CCFFFKKMMMC......',
+        '.....CCFFFKKMMMC......',
+        '.....CFCFFKKMFFC......',
+        '.....CFCFFFFFFFJC.....',
+        '.....CIICFFFFFJJJC....',
+        '.....CICGGGGGGGJJJC...',
+        '.....CIICFFFFFCCJJJC..',
+        '.....CICJJJKKKKCCJJJC.',
+        '.....CICJJJKKKKC.CJAAC',
+        '.....CICIIJJJJJC.CAAAC',
+        '.....CCIIMIJJJC..CAAAC',
+        '....CACIIMIJJC....CCC.',
+        '....CACIIMICC.........',
+        '.....CCIIMICC.........',
+        '......CIMMICJC........',
+        '......CIMMCIIC........',
+        '......CIMMCIIC........',
+        '......CIMMCJIIC.......',
+        '......CIMMCJIIC.......',
+        '......CIMMCJJIIC......',
+        '......CIMMCJJIIC......',
+        '......CIMMCCJJIIC.....',
+        '......CIMMCCJFFFC.....',
+        '......CFFFC.CFFFC.....',
+        '......CFFFC.CFFJC.....',
+        '.....CJFFIC.CIIJC.....',
+        '.....CJJKC..CIIJC.....',
+        '.....CJKC...CIIJC.....',
+        '....CJKKC...CIIJC.....',
+        '....CJKJC...CIIJC.....',
+        '...CJKKC....CIIJC.....',
+        '...CJKJC....CIIJC.....',
+        '..CJKKC.....CIIJC.....',
+        '..CJKJC......CIJC.....',
+        '..CKKC.......CIJC.....',
+        '.CJKJC.......CIJCC....',
+        'CAAAAAC.....CAAAAAC...',
+        'CAAAAAC.....CAAAAAC...',
+        '.CCCCC.......CCCCC....',
+      ],
+      [ // step 5
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMKKKKC.....',
+        '.....CFFFFMMMMMMC.....',
+        '......CFFFMMMMMMC.....',
+        '......CFFFMMMMMMC.....',
+        '......CFFFKMMMMC......',
+        '......CFFFKMMMMC......',
+        '......CFFFKMMMMC......',
+        '......CCFFKKFFMC......',
+        '......CCFFFFFFJC......',
+        '......CICFFFFJJC......',
+        '......CCGGGGGJJJC.....',
+        '......CICFFFFFJJJC....',
+        '......CCJJJKKKKJJJC...',
+        '......CCJJJKKKKCJJC...',
+        '......CCIIJJJJJCJAAC..',
+        '......CIIMIJJJCCAAAC..',
+        '......CCIMMJJC..CAAC..',
+        '......CCIMMCC....CC...',
+        '.......CIIMIC.........',
+        '........CIMMC.........',
+        '........CIMMCC........',
+        '........CIIMMC........',
+        '........CIIMMCC.......',
+        '.........CIMMCC.......',
+        '.........CIIMMC.......',
+        '.........CIIMMCC......',
+        '..........CIIMCC......',
+        '..........CIFFMCC.....',
+        '..........CIFFFCC.....',
+        '..........CJFFFC......',
+        '.........CJJKKCC......',
+        '........CJJKKCJC......',
+        '........CJKKCJJC......',
+        '.......CJKJCIJIC......',
+        '......CJKJCCIJC.......',
+        '.....CJKJJCCIJC.......',
+        '....CJKJJC.CIJC.......',
+        '....CKJJC.CIIJC.......',
+        '...CJJJC..CIJIC.......',
+        '..CAAAAAC.CIJIC.......',
+        '..CAAAAAC.CIJIC.......',
+        '...CCCCC.CAAAAAC......',
+        '.........CAAAAAC......',
+        '..........CCCCC.......',
+      ],
+      [ // step 6
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMKKKKC.....',
+        '.....CFFFMMMMMMMC.....',
+        '......CFFMMMMMMMC.....',
+        '......CFFMMMMMMMC.....',
+        '......CFFMMMMMMC......',
+        '......CFFMMMMMMC......',
+        '......CFFMMMMMMC......',
+        '.......CFMFMMMMC......',
+        '.......CFFFFFFFC......',
+        '........CFFJFFC.......',
+        '.......CGGJJGGGC......',
+        '........CFJJJFC.......',
+        '.......CJJJJJKKC......',
+        '.......CJJJJJKKC......',
+        '.......CIIJJJJJC......',
+        '......CIIMIJJAC.......',
+        '.......CIMMIAAAC......',
+        '.......CIIMMAAAC......',
+        '.......CCIMMMAC.......',
+        '.......CJCIMMMC.......',
+        '........CCIIMMC.......',
+        '........CJCIIMMC......',
+        '........CJJCIIMMC.....',
+        '.........CJCIIMMMC....',
+        '.........CJICIIMMC....',
+        '.........CJJICIIFMC...',
+        '.........CJJICIFFFC...',
+        '..........CJFFCFFFC...',
+        '..........CFFCJJFKC...',
+        '..........CFCJJKKC....',
+        '..........CICJKKC.....',
+        '..........CCJKKC......',
+        '.........CCJKKJC......',
+        '.........CCKKJC.......',
+        '.........CJKJC........',
+        '........CJKJJC........',
+        '.......CCKJJC.........',
+        '......CAAAAAC.........',
+        '......CAAAAAC.........',
+        '......CAAAAAC.........',
+        '.......CCCCC..........',
+        '......CAAAAAC.........',
+        '......CAAAAAC.........',
+        '.......CCCCC..........',
+      ],
+      [ // step 7
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMKKKKC.....',
+        '.....CFFMMMKMMMMC.....',
+        '......CFMMMKMMMMC.....',
+        '......CFMMMKMMMMC.....',
+        '......CFMMKKMMMC......',
+        '......CMMMKKMMMC......',
+        '......CMMMKKMMMC......',
+        '......CFFFKKMMMC......',
+        '......CFFFFFFFFC......',
+        '......CJJFFFFFCC......',
+        '......CJJGGGGGGCC.....',
+        '......CJJFFFFFCIIC....',
+        '......CJJJJKKKKCIIC...',
+        '......CJJJJKKKKCIIC...',
+        '......CJJJJJJJJCIAAC..',
+        '......CJAJIJJJCCAAAC..',
+        '......CAAAMIJC..CAAC..',
+        '......CAAAMMIC...CC...',
+        '.......CAIIMMC........',
+        '.......CCCIIMMC.......',
+        '.......CJICIIMMC......',
+        '.......CJJICIIMMC.....',
+        '.......CJJICIIMMMC....',
+        '.......CJJIICIIMMMC...',
+        '........CJIICCIIMMMC..',
+        '........CJIIC.CIFFFC..',
+        '........CJIIC.CIFFFC..',
+        '........CJJIJC.CFFFC..',
+        '........CJFFJCCJJKC...',
+        '........CFFFFCCJJKC...',
+        '........CIFFC.CJKJC...',
+        '........CIJJCCJJKC....',
+        '.......CIIJC.CJKKC....',
+        '.......CIJJC.CJKJC....',
+        '.......CIJC.CJKKC.....',
+        '......CIJJC.CJKJC.....',
+        '......CIJIC.CJKJC.....',
+        '.....CIJJC..CKJC......',
+        '.....CIJIC.CJJJC......',
+        '.....CJJC.CAAAAAC.....',
+        '....CIJIC.CAAAAAAC....',
+        '...CAAAAAC.CCCCCC.....',
+        '...CAAAAAC............',
+        '....CCCCC.............',
+      ],
+      [ // standing
+        '............CCC.......',
+        '...........CEBBC......',
+        '..........CEEBDDC.....',
+        '..........CEBDDLDC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDHHHC....',
+        '.........CBBBDDHDC....',
+        '.........CBBBDDDDC....',
+        '..........CBBDDDDC....',
+        '..........CBBDDDC.....',
+        '...........CBBBC......',
+        '...........CFFC.......',
+        '..........CFFFC.......',
+        '..........CFFCC.......',
+        '........CCCFFMMC......',
+        '.......CFMMMMMMC......',
+        '.......CMKKMMMMMC.....',
+        '......CFMMMMMMMMC.....',
+        '......CFFMMMKKKKC.....',
+        '.....CFFFMMMMMMMC.....',
+        '......CFFMMMMMMMC.....',
+        '......CFFFMMMMMMC.....',
+        '......CFFFMMMMMC......',
+        '......CFFFMMMMMC......',
+        '......CFFFMMMMMC......',
+        '.......CFFFFMMMC......',
+        '.......CFFFFFFFC......',
+        '........CFJFJFC.......',
+        '.......CGGGJJGGC......',
+        '........CFFJJJC.......',
+        '.......CJJJKJJKC......',
+        '.......CJJJKJJJC......',
+        '.......CIIJJJJJC......',
+        '......CIIMIJJJAAC.....',
+        '......CCIMMJJAAAC.....',
+        '.......CIMMCCAAAC.....',
+        '.......CIIMMCCCC......',
+        '.......CCIMMC.........',
+        '.......CCIMMIC........',
+        '........CIIMMC........',
+        '........CCIMMC........',
+        '........CCIIMMC.......',
+        '........CCIIMMC.......',
+        '.........CCIMMC.......',
+        '.........CCIIMMC......',
+        '.........CCIFFFC......',
+        '.........CJCFFFC......',
+        '..........CCFFFC......',
+        '.........CICJKC.......',
+        '.........CICJKC.......',
+        '.........CCJJKC.......',
+        '........CICJKKC.......',
+        '........CICJKJC.......',
+        '........CICJKC........',
+        '.......CICJJKC........',
+        '.......CICJKJC........',
+        '.......CICJKJC........',
+        '......CIJCJKC.........',
+        '......CIJCJKC.........',
+        '.....CAACAAAAC........',
+        '.....CAACAAAAAC.......',
+        '......CCCCCCCC........',
+      ],
+    ],
+  };
 
   const SPRITES = (() => {
     const blank = (w) => Array.from({ length: RIDER_H }, () => Array(w).fill('.'));
@@ -122,7 +908,6 @@
       const h = Math.sqrt(Math.max(0, l1 * l1 - a * a));
       return [hx + (a * dx) / d + (h * dy) / d, hy + (a * dy) / d - (h * dx) / d];
     };
-    const along = ([x, y], angle, len) => [x + len * Math.sin(angle), y + len * Math.cos(angle)];
 
     // rider: grown-up proportions (small head, taller torso)
     const HEAD = [
@@ -134,10 +919,10 @@
       '..sSSSS..',
       '...ss....',
     ];
-    const TORSO = [
-      '..BBBO..',
-      '.VVBBBOO',
-      'VVvBBBBO',
+    const TORSO = [              // upper back slanted forward a pixel for a sportier lean
+      '...BBBO..',
+      '..VVBBBOO',
+      '.VVvBBBBO',
       'VvvBBBBB',
       '.vBBBBBB',
       '..BBBBB.',
@@ -148,110 +933,23 @@
     const headTop = [BX + 17, 16], headLow = [BX + 16.5, 18], bar = [BX + 19.5, 16], drop = [BX + 19.5, 18];
     const hip = [BX + 10, 17.2];
 
-    // classic 8-bit robot: boxy silver head with an antenna, a glowing eye and a mouth
-    // grille, a box body with a chest light, and stiff straight limbs that march without
-    // bending. Far-side limbs are a shade darker. Angles are measured from straight down.
-    const RUN = [
-      { legs: [0.35, -0.35], arms: [-0.45, 0.45] },
-      { legs: [0.15, -0.15], arms: [-0.2, 0.2] },
-      { legs: [-0.35, 0.35], arms: [0.45, -0.45] },
-      { legs: [-0.15, 0.15], arms: [0.2, -0.2] },
-    ];
-    const STAND = { legs: [0, 0], arms: [0.05, -0.05] };
-    const BOT_HEAD = [
-      '....Z..',
-      '....h..',
-      '.HHHHHH',
-      'JHHHzzH',
-      'HHHHzzH',
-      'HHHhhhH',
-      '.HHHHHH',
-    ];
-    const BOT_BODY = [
-      'HHHHHH',
-      'HhhhhH',
-      'HhZJhH',
-      'HhhhhH',
-      'HHHHHH',
-      '.hhhh.',
-    ];
-    function humanoid(g, pose) {
-      const hip = [6, 16.5], shoulder = [6, 10];
-      pose.legs.forEach((a, i) => {
-        const top = [hip[0] + (i ? 0.5 : -0.5), hip[1]], ft = along(top, a, 7.5), c = i ? 'H' : 'h';
-        line(g, top, ft, c, true);
-        line(g, [ft[0] - 0.5, ft[1] + 0.5], [ft[0] + 2, ft[1] + 0.5], 'M', true);
-      });
-      stamp(g, BOT_BODY, 3, 10);
-      pose.arms.forEach((a, i) => {
-        const hand = along(shoulder, a, 5.5), c = i ? 'H' : 'h';
-        line(g, [shoulder[0] + (i ? 2 : -2), shoulder[1]], [hand[0] + (i ? 2 : -2), hand[1]], c);
-        put(g, hand[0] + (i ? 2 : -2), hand[1] + 0.5, 'J');
-      });
-      put(g, 6, 9, 'h');
-      stamp(g, BOT_HEAD, 3, 2);
-    }
-
-    // quadruped (Go2 style): light shell, darker belly, hip motors, dark head with a camera
-    // light and LiDAR bump; legs bend backward at the knee and trot on small feet
-    const GO2 = [
-      '...LLLLLLLLLLLLLL......',
-      '..LLLLLLLLLLLLLLLLLDDD.',
-      '.LLLLLLLLLLLLLLLLLLDDDY',
-      '.lllllllllllllllllLDDD.',
-      '..lllDDDlllllllDDDllDD.',
-      '....DDD.......DDD..DD..',
-    ];
-    const GO2_HIPS = [[9, 16.5], [19, 16.5]];  // rear, front
-    const GROUND = 25;
-    // trot: diagonal pairs (near rear + far front, near front + far rear) step together;
-    // each foot slides back while planted, then lifts and swings forward
-    const STEP = [[2, 0], [0, 0], [-2, 0], [0, -1.5]];
-    const kneeBack = ([hx, hy], [fx, fy]) => {
-      const [kx, ky] = knee([-hx, hy], [-fx, fy], 4.8, 4.8);
-      return [-kx, ky];
-    };
-
     const merge = (back, fore) => {
       const out = outline(fore);
       return back.map((r, y) => r.map((c, x) => (out[y][x] !== '.' ? out[y][x] : c)).join(''));
     };
 
-    const human = [0, 1, 2, 3, 4].map((k) => {
-      const fore = blank(HUMAN_W);
-      humanoid(fore, k < 4 ? RUN[k] : STAND);
-      return merge(blank(HUMAN_W), fore);
-    });
-
-    const go2 = [0, 1, 2, 3, 4].map((k) => {
-      const moving = k < 4;
-      const leg = (g, hip, phase, thigh, shin) => {
-        const [dx, dy] = moving ? STEP[phase % 4] : [0, 0];
-        const foot = [hip[0] + dx, GROUND + dy], kn = kneeBack(hip, foot);
-        line(g, hip, kn, thigh, true);
-        line(g, kn, foot, shin);
-        line(g, [foot[0] - 0.5, foot[1]], [foot[0] + 0.5, foot[1]], 'D', true);
-      };
-      const fore = blank(GO2_W);
-      const far = ([x, y]) => [x + 1, y];
-      leg(fore, far(GO2_HIPS[0]), k + 2, 'd', 'd');   // far rear (pair B)
-      leg(fore, far(GO2_HIPS[1]), k, 'd', 'd');       // far front (pair A)
-      stamp(fore, GO2, 3, 11);
-      put(fore, 25, 13, k % 4 < 2 ? 'Y' : 'y');
-      leg(fore, GO2_HIPS[0], k, 'l', 'D');            // near rear (pair A)
-      leg(fore, GO2_HIPS[1], k + 2, 'l', 'D');        // near front (pair B)
-      return merge(blank(GO2_W), fore);
-    });
-
     const bike = [0, 1, 2, 3, 4].map((k) => {
       const moving = k < 4, spin = moving ? (k * Math.PI) / 8 : 0;
-      const theta = Math.PI / 4 + ((moving ? k : 0) * Math.PI) / 2;
+      const theta = Math.PI / 4;   // coasting: legs stay still, only the wheels roll
       const pedal = [crank[0] + 2.1 * Math.cos(theta), crank[1] + 2.1 * Math.sin(theta)];
       const pedalFar = [2 * crank[0] - pedal[0], 2 * crank[1] - pedal[1]];
 
       const back = blank(RIDER_W);
       wheel(back, rear, spin);
       wheel(back, front, spin);
+      [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]].forEach(([dx, dy]) =>
+        put(back, rear[0] + dx, rear[1] + dy, 'M'));                  // rear hub motor
+      put(back, rear[0], rear[1], 'R');
 
       // far leg, bike frame, rider, near leg
       const fore = blank(RIDER_W);
@@ -259,15 +957,22 @@
       line(fore, hip, kneeFar, 'p', true);
       line(fore, kneeFar, pedalFar, 's', true);
       line(fore, pedalFar, [pedalFar[0] + 1, pedalFar[1]], 'Q', true);
-      [[rear, crank], [rear, seat], [seat, crank], [seat, headTop], [crank, headLow], [headTop, headLow],
-        [headLow, front], [headTop, bar], [bar, drop]].forEach(([a, b]) => line(fore, a, b, 'F'));
-      put(fore, BX + 13, 19, 'f');
-      put(fore, BX + 14, 19, 'f');
+      // e-bike: graphite frame with thick tubes, red accent, battery on the down tube,
+      // headlight up front and a red tail light at the back
+      [[rear, crank], [rear, seat], [seat, crank], [headTop, headLow], [headLow, front], [headTop, bar],
+        [bar, drop]].forEach(([a, b]) => line(fore, a, b, 'F'));
+      [[seat, headTop], [crank, headLow]].forEach(([a, b]) => line(fore, a, b, 'F', true));
+      line(fore, [BX + 11.5, 19.8], [BX + 15.5, 17.6], 'A', true);   // battery pack
+      put(fore, BX + 16, 18, 'L');                                    // battery status light
+      line(fore, [BX + 10, 16.6], [BX + 16, 15.6], 'f');              // red accent on the top tube
+      put(fore, BX + 18.2, 16.8, 'Y');                                // headlight
+      put(fore, BX + 3, 17, 'Z');                                     // tail light
+      put(fore, BX + 4, 17, 'Z');
       stamp(fore, TORSO, BX + 6, 11);
-      stamp(fore, HEAD, BX + 8, 4);
-      line(fore, [BX + 12.5, 13], [BX + 18.5, 16], 'S', true);
-      put(fore, BX + 12, 12, 'O');
-      put(fore, BX + 13, 12, 'o');
+      stamp(fore, HEAD, BX + 9, 5);                      // head a pixel lower and further forward
+      line(fore, [BX + 13.5, 13.5], [BX + 18.5, 16], 'S', true);
+      put(fore, BX + 13, 12, 'O');
+      put(fore, BX + 14, 12, 'o');
       const kneeNear = knee(hip, pedal, 3.2, 3.4);
       line(fore, hip, kneeNear, 'P', true);
       line(fore, kneeNear, pedal, 'S', true);
@@ -275,7 +980,7 @@
       return merge(back, fore);
     });
 
-    return { bike, human, go2 };
+    return { bike };
   })();
 
   // Render string-art rows as SVG rects, merging horizontal runs of the same color.
@@ -489,6 +1194,9 @@
     const shroud = el('linearGradient', { id: 'j-gpu-shroud', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
     el('stop', { offset: 0, 'stop-color': '#4a4e57' }, shroud);
     el('stop', { offset: 1, 'stop-color': '#1d1f24' }, shroud);
+    const redGlow = el('radialGradient', { id: 'j-redglow' }, defs);
+    el('stop', { offset: 0, 'stop-color': '#ff3b3b', 'stop-opacity': 0.75 }, redGlow);
+    el('stop', { offset: 1, 'stop-color': '#ff3b3b', 'stop-opacity': 0 }, redGlow);
     const cardClip = el('clipPath', { id: 'j-card' }, defs);
     el('rect', { width: W, height: CARD_H, rx: 4 }, cardClip);
     const waterClip = el('clipPath', { id: 'j-water-clip' }, defs);
@@ -595,27 +1303,51 @@
       return label;
     });
 
-    // A mover is one animated sprite: it shows the cycle frame for the distance travelled
-    // (one step per `stride`), or the standing frame when it hasn't moved.
-    function mover(frameRows, cx, stride) {
+    // A mover is one animated sprite standing on the path. The last frame is the standing pose;
+    // the others are its cycle, advanced per `stride` of distance travelled or, with `frameMs`,
+    // at a fixed pace in time (so a walk keeps a natural rhythm whatever the speed).
+    function mover(frameRows, palette, { cx, h, scale, stride, frameMs }) {
       const g = el('g', {}, card);
-      const frames = frameRows.map((rows) => sprite(rows, RIDER_PALETTE, g));
+      const frames = frameRows.map((rows) => sprite(rows, palette, g));
+      const cycle = frames.length - 1;
       let last = null;
-      return (x) => {
+      return (x, now) => {
         const moving = last !== null && Math.abs(x - last) > 0.01;
-        const k = moving ? ((Math.floor(x / stride) % 4) + 4) % 4 : 4;
+        const t = frameMs ? Math.floor(now / frameMs) : Math.floor(x / stride);
+        const k = moving ? ((t % cycle) + cycle) % cycle : cycle;
         frames.forEach((f, i) => { f.style.display = i === k ? '' : 'none'; });
-        const tx = (x - cx * MAGE_SCALE).toFixed(2), ty = (FEET - (RIDER_H - 0.5) * MAGE_SCALE).toFixed(2);
-        g.setAttribute('transform', `translate(${tx} ${ty}) scale(${MAGE_SCALE})`);
+        const tx = (x - cx * scale).toFixed(2), ty = (FEET - (h - 0.5) * scale).toFixed(2);
+        g.setAttribute('transform', `translate(${tx} ${ty}) scale(${scale})`);
         last = x;
       };
     }
-    // robots tag along behind, a little slower: the robot dog close, the retro robot further back
+    // robots tag along behind, a little slower: the robot dog close, the humanoid further back
     const BOTS = [
-      { gap: 34, lag: 1100, place: mover(SPRITES.human, HUMAN_CX, 2.6) },
-      { gap: 18, lag: 450, place: mover(SPRITES.go2, GO2_CX, 1.6) },
+      { gap: 33, lag: 1100, place: mover(HUMANOID_SPRITE.frames, HUMANOID_SPRITE.palette,
+        { cx: 11, h: HUMANOID_SPRITE.frames[0].length, scale: 0.27, frameMs: 120 }) },
+      { gap: 19, lag: 450, place: mover(DOG_SPRITE.frames, DOG_SPRITE.palette,
+        { cx: 29, h: DOG_SPRITE.frames[0].length, scale: 0.3, stride: 1.2 }) },
     ];
-    const placeBike = mover(SPRITES.bike, MAGE_CX, 1.4);
+    // a red light projected on the path under the e-bike, moving with it
+    const floorLight = el('g', { class: 'j-floorlight' }, card);
+    el('ellipse', { cx: -1.5, cy: FEET + 0.3, rx: 10, ry: 1.2, fill: 'url(#j-redglow)' }, floorLight);
+    el('rect', { x: -6.5, y: FEET, width: 10, height: 0.35, rx: 0.17, fill: '#ff6b6b', opacity: 0.8 }, floorLight);
+    // wind streaks trailing the rider; they fade with speed, so they vanish as the bike stops
+    const wind = el('g', { class: 'j-wind', opacity: 0 }, card);
+    [[-10, 14, 7], [-14, 10.5, 9], [-9.5, 7, 6], [-16, 4, 8]].forEach(([dx, up, len], i) => el('rect', {
+      x: dx - len, y: FEET - up, width: len, height: 0.45, rx: 0.22, class: 'j-wind-line',
+      style: `animation-delay:${(-i * 0.17).toFixed(2)}s`,
+    }, wind));
+    const placeBikeSprite = mover(SPRITES.bike, RIDER_PALETTE, { cx: MAGE_CX, h: RIDER_H, scale: MAGE_SCALE, stride: 1.4 });
+    let lastBikeX = null;
+    const placeBike = (x, now) => {
+      placeBikeSprite(x, now);
+      const speed = lastBikeX === null ? 0 : Math.abs(x - lastBikeX);
+      lastBikeX = x;
+      floorLight.setAttribute('transform', `translate(${x.toFixed(2)} 0)`);
+      wind.setAttribute('transform', `translate(${x.toFixed(2)} 0)`);
+      wind.setAttribute('opacity', Math.min(1, speed * 5).toFixed(2));
+    };
 
     // invisible hit areas make each stop (logo, path marker and label) a button
     const half = xs.length > 1 ? (xs[1] - xs[0]) / 2 : W / 2;
@@ -687,9 +1419,9 @@
       const p = progress(now, 0);
       const x = A + (B - A) * ease(p);
       const near = xs.findIndex((sx) => Math.abs(sx - x) < 4);
-      placeBike(x);
+      placeBike(x, now);
       // each robot follows the bike's path a little later, so it trails and then catches up
-      BOTS.forEach((b) => b.place(A + (B - A) * ease(progress(now, b.lag)) - b.gap));
+      BOTS.forEach((b) => b.place(A + (B - A) * ease(progress(now, b.lag)) - b.gap, now));
       highlight(p >= 1 ? present : near, p >= 1);
       scenery(now);
       frameId = requestAnimationFrame(tick);

@@ -322,6 +322,15 @@ span.highlight {
   animation: j-shimmer 4s ease-in-out infinite;
 }
 
+.journey .j-wind-line {
+  fill: #ffffff;
+  animation: j-wind 0.6s linear infinite;
+}
+
+.journey .j-floorlight {
+  animation: j-floorpulse 1.6s ease-in-out infinite;
+}
+
 .journey .j-pad {
   fill: #7a6f9a;
 }
@@ -371,6 +380,16 @@ span.highlight {
   50% { opacity: 0.55; }
 }
 
+@keyframes j-wind {
+  0% { transform: translateX(3px); opacity: 0; }
+  30% { opacity: 0.9; }
+  100% { transform: translateX(-6px); opacity: 0; }
+}
+
+@keyframes j-floorpulse {
+  50% { opacity: 0.55; }
+}
+
 @keyframes j-shimmer {
   0%, 100% { opacity: 0; }
   50% { opacity: 0.7; }
@@ -389,6 +408,8 @@ span.highlight {
 @media (prefers-reduced-motion: reduce) {
   .journey .j-pad.j-on,
   .journey .j-halo.j-on,
+  .journey .j-floorlight,
+  .journey .j-wind-line,
   .journey .j-shimmer {
     animation: none;
   }
